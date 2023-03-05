@@ -15,6 +15,10 @@ const port = process.env.PORT || 3000
 app.engine('hbs', handlebars({ extname: '.hbs' }))
 app.set('view engine', 'hbs')
 // ===========================================================
+// parse HTTP request body with specific payload
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+// ===========================================================
 
 app.use('/api', apis)
 app.use(pages)
