@@ -6,8 +6,8 @@ const { User } = requireWrapper('models')
 
 const accountServices = {
   signUp: async (name, email, password, confirmPassword, controllerCallback) => {
-    if (password !== confirmPassword) throw new Error('Passwords do not match!')
     try {
+      if (password !== confirmPassword) throw new Error('Passwords do not match!')
       const user = await User.findOne({ where: { email } })
       if (user) throw new Error('Email already exists!')
       const hash = await bcrypt.hash(password, 10)

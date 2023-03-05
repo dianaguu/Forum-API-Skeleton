@@ -12,6 +12,8 @@ const accountController = {
     const { name, email, password, confirmPassword } = req.body
     accountServices.signUp(name, email, password, confirmPassword, (err, data) => {
       if (err) return next(err)
+      req.flash('success_messages', '成功註冊帳號！')
+      req.session.signUpData = data
       return res.redirect('/signin')
     })
   }
