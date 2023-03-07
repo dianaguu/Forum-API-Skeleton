@@ -6,6 +6,7 @@ global.requireWrapper = name => {
 const express = require('express')
 const handlebars = require('express-handlebars')
 const session = require('express-session')
+const passport = require('./configs/passport')
 const flash = require('connect-flash')
 const { apis, pages } = require('./routes')
 
@@ -22,12 +23,14 @@ app.set('view engine', 'hbs')
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 // ===========================================================
-// session
+// session and passport
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 // ===========================================================
 // flash messages
 app.use(flash())
