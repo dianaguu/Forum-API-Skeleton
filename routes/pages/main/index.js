@@ -14,7 +14,7 @@ router.get('/signin', accountController.signInPage)
 router.post('/signin',
   passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }),
   accountController.signIn)
-
+router.post('/signoff', accountController.signOff)
 router.use('/', pageErrorHandler)
 
 module.exports = router

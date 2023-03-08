@@ -23,6 +23,13 @@ const accountController = {
   signIn: (req, res) => {
     req.flash('success_messages', 'Signed in successfully')
     res.redirect('objectives')
+  },
+  signOff: (req, res, next) => {
+    req.logout(function (err) {
+      if (err) { return next(err) }
+    })
+    req.flash('success_messages', 'Signed off successfully')
+    res.redirect('/signin')
   }
 }
 

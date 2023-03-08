@@ -12,6 +12,8 @@ const handlebars = require('express-handlebars')
 const session = require('express-session')
 const passport = require('./configs/passport')
 const flash = require('connect-flash')
+const handlebarHelper = require('./helpers/handlebar.helper')
+const { getUser } = require('./helpers/authentication.helper')
 const { apis, pages } = require('./routes')
 
 const app = express()
@@ -20,7 +22,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET
 
 // ===========================================================
 // views: express-handlebars
-app.engine('hbs', handlebars({ extname: '.hbs' }))
+app.engine('hbs', handlebars({ extname: '.hbs', helpers: handlebarHelper }))
 app.set('view engine', 'hbs')
 // ===========================================================
 // parse HTTP request body with specific payload
@@ -43,6 +45,7 @@ app.use(flash())
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')
   res.locals.error_messages = req.flash('error_messages')
+  res.locals.user = getUser(req)
   next()
 })
 // ===========================================================
