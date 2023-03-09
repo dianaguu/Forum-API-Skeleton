@@ -26,6 +26,14 @@ const objectiveController = {
         res.redirect('/admin/objectives')
       })
       .catch(err => next(err))
+  },
+  getObjective: (req, res, next) => {
+    Objective.findByPk(req.params.id, { raw: true })
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        res.render('admin/objective', { objective })
+      })
+      .catch(err => next(err))
   }
 }
 

@@ -4,6 +4,7 @@ const router = require('express').Router()
 const objectiveController = requireWrapper('controllers/pages/admin/objective.controller')
 
 router.get('/create', objectiveController.createObjective)
+router.get('/:id', objectiveController.getObjective)
 router.get('/', objectiveController.getObjectives)
 router.post('/', objectiveController.postObjective)
 
