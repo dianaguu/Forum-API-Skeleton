@@ -8,6 +8,6 @@ const { requestAuthenticatedAdmin } = requireWrapper('middlewares/pageAuthentica
 router.use('/objectives', requestAuthenticatedAdmin, require('./objective.route'))
 
 // admin root
-router.use('/', requestAuthenticatedAdmin, (req, res) => res.render('admin/objectives'))
+router.use('/', requestAuthenticatedAdmin, (req, res) => res.redirect('/admin/objectives'))
 
 module.exports = router

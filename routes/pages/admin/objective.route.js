@@ -1,8 +1,12 @@
 const router = require('express').Router()
 
 // eslint-disable-next-line
-const adminController = requireWrapper('controllers/pages/admin/objective.controller')
+const objectiveController = requireWrapper('controllers/pages/admin/objective.controller')
 
-router.get('/', adminController.getObjectives)
+router.get('/create', objectiveController.createObjective)
+router.get('/', objectiveController.getObjectives)
+router.post('/', objectiveController.postObjective)
+
+router.use('/', (req, res) => res.redirect('/admin/objectives'))
 
 module.exports = router
