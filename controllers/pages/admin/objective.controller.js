@@ -62,6 +62,15 @@ const objectiveController = {
         res.redirect('/admin/objectives')
       })
       .catch(err => next(err))
+  },
+  deleteObjective: (req, res, next) => {
+    return Objective.findByPk(req.params.id)
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        return objective.destroy()
+      })
+      .then(() => res.redirect('/admin/objectives'))
+      .catch(err => next(err))
   }
 }
 
