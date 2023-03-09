@@ -6,11 +6,14 @@ const { accountAuthenticated } = requireWrapper('middlewares/apiAuthentication')
 const { apiErrorHandler } = requireWrapper('middlewares/errorHandler')
 /* eslint-enable */
 
-router.use('/objectives', require('./objective.route'))
+// objective
+router.use('/objectives', accountAuthenticated, require('./objective.route'))
 
+// account
 router.post('/signup', accountController.signUp)
 router.post('/signin', accountAuthenticated, accountController.signIn)
 
+// api root
 router.use('/', (req, res) =>
   res.json({
     status: 'success',
@@ -21,6 +24,8 @@ router.use('/', (req, res) =>
     }
   })
 )
-router.use('/', apiErrorHandler)
+
+// error handler
+router.use(apiErrorHandler)
 
 module.exports = router
