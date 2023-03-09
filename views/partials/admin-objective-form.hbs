@@ -1,0 +1,21 @@
+<div class="form-row mb-3">
+  <label class="form-label" for="name">Name</label>
+  <input class="form-control" type="text" name="name" id="name" value="{{objective.name}}" placeholder="Enter name" required>
+</div>
+<div class="form-row mb-3">
+  <label class="form-label" for="tel">Telephone</label>
+  <input class="form-control" type="telephone" name="telephone" id="telephone" value="{{objective.telephone}}" placeholder="Enter telephone">
+</div>
+<div class="form-row mb-3">
+  <label class="form-label" for="address">Address</label>
+  <input class="form-control" type="text" name="address" id="address" value="{{objective.address}}" placeholder="Enter address">
+</div>
+<div class="form-row mb-3">
+  <label class="form-label" for="openingHours">Opening Hours</label>
+  <input class="form-control" type="time" name="openingHours" id="openingHours" value="{{objective.openingHours}}" placeholder="Enter opening hours">
+</div>
+<div class="form-row mb-3">
+  <label class="form-label" for="description">Description</label>
+  <textarea class="form-control" id="description" name="description" rows="3">{{objective.description}}</textarea>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>

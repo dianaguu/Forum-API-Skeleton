@@ -12,6 +12,7 @@ const handlebars = require('express-handlebars')
 const session = require('express-session')
 const passport = require('./configs/passport')
 const flash = require('connect-flash')
+const methodOverride = require('method-override')
 const handlebarHelper = require('./helpers/handlebar.helper')
 const { getUser } = require('./helpers/authentication.helper')
 const { apis, pages } = require('./routes')
@@ -28,6 +29,8 @@ app.set('view engine', 'hbs')
 // parse HTTP request body with specific payload
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+// method-override
+app.use(methodOverride('_method'))
 // ===========================================================
 // session and passport
 app.use(session({

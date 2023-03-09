@@ -34,6 +34,34 @@ const objectiveController = {
         res.render('admin/objective', { objective })
       })
       .catch(err => next(err))
+  },
+  editObjective: (req, res, next) => {
+    Objective.findByPk(req.params.id, { raw: true })
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        res.render('admin/objective-edit-form', { objective })
+      })
+      .catch(err => next(err))
+  },
+  putObjective: (req, res, next) => {
+    const { name, telephone, address, openingHours, description } = req.body
+    if (!name) throw new Error('Objective name is required!')
+    Objective.findByPk(req.params.id)
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        return objective.update({
+          name,
+          telephone,
+          address,
+          openingHours,
+          description
+        })
+      })
+      .then(() => {
+        req.flash('success_messages', 'Objective was updated successfully')
+        res.redirect('/admin/objectives')
+      })
+      .catch(err => next(err))
   }
 }
 
