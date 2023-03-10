@@ -1,31 +1,22 @@
 /* eslint-disable */
 const { Objective } = requireWrapper('models')
+const objectiveServices = requireWrapper('services/objective.services')
 /* eslint-enable */
 
 const objectiveController = {
   getObjectives: (req, res, next) => {
-    Objective.findAll({ raw: true })
-      .then(objectives => res.render('admin/objectives', { objectives }))
-      .catch(err => next(err))
+    objectiveServices.getObjectives(req, (err, data) => err ? next(err) : res.render('admin/objectives', data))
   },
   createObjective: (req, res) => {
     return res.render('admin/objective-create-form')
   },
   postObjective: (req, res, next) => {
-    const { name, telephone, address, openingHours, description } = req.body
-    if (!name) throw new Error('Objective name is required!')
-    Objective.create({
-      name,
-      telephone,
-      address,
-      openingHours,
-      description
+    objectiveServices.postObjective(req, (err, data) => {
+      if (err) return next(err)
+      req.flash('success_messages', 'objective was successfully created')
+      req.session.createdData = data
+      return res.redirect('/admin/objectives')
     })
-      .then(() => {
-        req.flash('success_messages', 'objective was created successfully')
-        res.redirect('/admin/objectives')
-      })
-      .catch(err => next(err))
   },
   getObjective: (req, res, next) => {
     Objective.findByPk(req.params.id, { raw: true })
