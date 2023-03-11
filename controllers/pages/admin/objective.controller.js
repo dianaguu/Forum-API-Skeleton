@@ -19,12 +19,7 @@ const objectiveController = {
     })
   },
   getObjective: (req, res, next) => {
-    Objective.findByPk(req.params.id, { raw: true })
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        res.render('admin/objective', { objective })
-      })
-      .catch(err => next(err))
+    objectiveServices.getObjective(req, (err, data) => err ? next(err) : res.render('admin/objective', data))
   },
   editObjective: (req, res, next) => {
     Objective.findByPk(req.params.id, { raw: true })

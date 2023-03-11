@@ -26,6 +26,14 @@ const ObjectiveServices = {
       callback(err)
     }
   },
+  getObjective: (req, callback) => {
+    Objective.findByPk(req.params.id, { raw: true })
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        callback(null, { objective })
+      })
+      .catch(err => callback(err))
+  },
   putObjective: async (req, callback) => {
     try {
       const { name, telephone, address, openingHours, description } = req.body
