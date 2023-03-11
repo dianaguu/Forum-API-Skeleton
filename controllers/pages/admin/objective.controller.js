@@ -35,24 +35,12 @@ const objectiveController = {
       .catch(err => next(err))
   },
   putObjective: (req, res, next) => {
-    const { name, telephone, address, openingHours, description } = req.body
-    if (!name) throw new Error('Objective name is required!')
-    Objective.findByPk(req.params.id)
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        return objective.update({
-          name,
-          telephone,
-          address,
-          openingHours,
-          description
-        })
-      })
-      .then(() => {
-        req.flash('success_messages', 'Objective was updated successfully')
-        res.redirect('/admin/objectives')
-      })
-      .catch(err => next(err))
+    objectiveServices.putObjective(req, (err, data) => {
+      if (err) return next(err)
+      req.flash('success_messages', 'Objective was updated successfully')
+      req.session.updatedData = data
+      return res.redirect('/admin/objectives')
+    })
   },
   deleteObjective: (req, res, next) => {
     return Objective.findByPk(req.params.id)

@@ -8,6 +8,9 @@ const objectiveController = {
   },
   postObjective: (req, res, next) => {
     objectiveServices.postObjective(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  putObjective: (req, res, next) => {
+    objectiveServices.putObjective(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 

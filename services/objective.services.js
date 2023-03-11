@@ -14,14 +14,33 @@ const ObjectiveServices = {
       if (!name) throw new Error('Objective name is required!')
       const objective = await Objective.findOne({ where: { name } })
       if (objective) throw new Error('Objective already exists!')
-      const newObjective = await Objective.create({
+      const createdObjective = await Objective.create({
         name,
         telephone,
         address,
         openingHours,
         description
       })
-      callback(null, { objective: newObjective })
+      callback(null, { objective: createdObjective })
+    } catch (err) {
+      callback(err)
+    }
+  },
+  putObjective: async (req, callback) => {
+    try {
+      const { name, telephone, address, openingHours, description } = req.body
+      if (!name) throw new Error('Objective name is required!')
+      const objective = await Objective.findOne({ where: { name } })
+      if (!objective) throw new Error(`${name} does not exist!`)
+      // if (id !== objective.id) throw new Error(`id ${id} of req.body and id ${objective.id} queried form database are not match!`)
+      const updatedObjective = await objective.update({
+        name,
+        telephone,
+        address,
+        openingHours,
+        description
+      })
+      callback(null, { objective: updatedObjective })
     } catch (err) {
       callback(err)
     }

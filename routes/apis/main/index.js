@@ -12,18 +12,8 @@ router.use('/objectives', requestAuthenticated, requestAuthenticatedAdmin, requi
 router.post('/signup', accountController.signUp)
 router.post('/signin', accountAuthenticated, accountController.signIn)
 
-// URL: /api root
 router.use('/', (req, res) =>
-  res.json({
-    status: 'success',
-    data: {
-      Name: process.env.npm_package_name,
-      Version: process.env.npm_package_version,
-      URL: '/api',
-      Permission: 'User',
-      Description: 'Apply this forum to the objective you like. Enjoy!'
-    }
-  })
+  res.status(404).json({ status: 'error', message: `${req.originalUrl} not found` })
 )
 
 module.exports = router
