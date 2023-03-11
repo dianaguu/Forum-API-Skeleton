@@ -44,6 +44,19 @@ const ObjectiveServices = {
     } catch (err) {
       callback(err)
     }
+  },
+  deleteObjective: (req, callback) => {
+    return Objective.findByPk(req.params.id)
+      .then(objective => {
+        if (!objective) {
+          const err = new Error("Objective didn't exist!")
+          err.status = 404
+          throw err
+        }
+        return objective.destroy()
+      })
+      .then(deletedObjective => callback(null, { objective: deletedObjective }))
+      .catch(err => callback(err))
   }
 }
 

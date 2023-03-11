@@ -11,6 +11,9 @@ const objectiveController = {
   },
   putObjective: (req, res, next) => {
     objectiveServices.putObjective(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  deleteObjective: (req, res, next) => {
+    objectiveServices.deleteObjective(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 

@@ -43,13 +43,11 @@ const objectiveController = {
     })
   },
   deleteObjective: (req, res, next) => {
-    return Objective.findByPk(req.params.id)
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        return objective.destroy()
-      })
-      .then(() => res.redirect('/admin/objectives'))
-      .catch(err => next(err))
+    objectiveServices.deleteObjective(req, (err, data) => {
+      if (err) return next(err)
+      req.session.deletedData = data
+      return res.redirect('/admin/objectives')
+    })
   }
 }
 
