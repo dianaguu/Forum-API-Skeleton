@@ -8,7 +8,7 @@ const { requestAuthenticated, requestAuthenticatedAdmin } = requireWrapper('midd
 router.use('/objectives', requestAuthenticated, requestAuthenticatedAdmin, require('./objective.route'))
 
 router.use('/', (req, res) =>
-  res.status(404).json({ status: 'error', message: `${req.originalUrl} not found` })
+  res.status(400).json({ status: 'error', message: `${req.originalUrl} not found, or wrong http method` })
 )
 
 module.exports = router
