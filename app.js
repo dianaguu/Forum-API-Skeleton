@@ -44,6 +44,9 @@ app.use(passport.session())
 // flash messages
 app.use(flash())
 // ===========================================================
+// express static file
+app.use('/upload', express.static('upload'))
+// ===========================================================
 // response local variables
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')

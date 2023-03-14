@@ -1,5 +1,6 @@
 /* eslint-disable */
 const { Objective } = requireWrapper('models')
+const { localFileHandler } = requireWrapper('helpers/file.helper') 
 /* eslint-enable */
 
 const ObjectiveServices = {
@@ -8,23 +9,27 @@ const ObjectiveServices = {
       .then(objectives => callback(null, { objectives }))
       .catch(err => callback(err))
   },
-  postObjective: async (req, callback) => {
-    try {
-      const { name, telephone, address, openingHours, description } = req.body
-      if (!name) throw new Error('Objective name is required!')
-      const objective = await Objective.findOne({ where: { name } })
-      if (objective) throw new Error('Objective already exists!')
-      const createdObjective = await Objective.create({
-        name,
-        telephone,
-        address,
-        openingHours,
-        description
+  postObjective: (req, callback) => {
+    const { name, telephone, address, openingHours, description } = req.body
+    if (!name) throw new Error('Objective name is required!')
+
+    Promise.all([
+      Objective.findOne({ where: { name } }),
+      localFileHandler(req.file)
+    ])
+      .then(([objective, filePath]) => {
+        if (objective) throw new Error(`${name} already exist!`)
+        objective.update({
+          name,
+          telephone,
+          address,
+          openingHours,
+          description,
+          image: filePath || null
+        })
       })
-      callback(null, { objective: createdObjective })
-    } catch (err) {
-      callback(err)
-    }
+      .then(createdObjective => callback(null, { objective: createdObjective }))
+      .catch(err => callback(err))
   },
   getObjective: (req, callback) => {
     Objective.findByPk(req.params.id, { raw: true })
@@ -34,24 +39,28 @@ const ObjectiveServices = {
       })
       .catch(err => callback(err))
   },
-  putObjective: async (req, callback) => {
-    try {
-      const { name, telephone, address, openingHours, description } = req.body
-      if (!name) throw new Error('Objective name is required!')
-      const objective = await Objective.findOne({ where: { name } })
-      if (!objective) throw new Error(`${name} does not exist!`)
-      // if (id !== objective.id) throw new Error(`id ${id} of req.body and id ${objective.id} queried form database are not match!`)
-      const updatedObjective = await objective.update({
-        name,
-        telephone,
-        address,
-        openingHours,
-        description
+  putObjective: (req, callback) => {
+    const { name, telephone, address, openingHours, description } = req.body
+    if (!name) throw new Error('Objective name is required!')
+
+    Promise.all([
+      Objective.findByPk(req.params.id),
+      localFileHandler(req.file)
+    ])
+      .then(([objective, filePath]) => {
+        if (!objective) throw new Error(`${name} does not exist!`)
+        // if (id !== objective.id) throw new Error(`id ${id} of req.body and id ${objective.id} queried form database are not match!`)
+        objective.update({
+          name,
+          telephone,
+          address,
+          openingHours,
+          description,
+          image: filePath || null
+        })
       })
-      callback(null, { objective: updatedObjective })
-    } catch (err) {
-      callback(err)
-    }
+      .then(updatedObjective => callback(null, { objective: updatedObjective }))
+      .catch(err => callback(err))
   },
   deleteObjective: (req, callback) => {
     return Objective.findByPk(req.params.id)
