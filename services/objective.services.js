@@ -1,16 +1,20 @@
 /* eslint-disable */
-const { Objective } = requireWrapper('models')
+const { Objective, Category } = requireWrapper('models')
 const { localFileHandler } = requireWrapper('helpers/file.helper') 
 /* eslint-enable */
 
 const ObjectiveServices = {
   getObjectives: (req, callback) => {
-    Objective.findAll({ raw: true })
+    Objective.findAll({
+      raw: true,
+      nest: true,
+      include: [Category]
+    })
       .then(objectives => callback(null, { objectives }))
       .catch(err => callback(err))
   },
   postObjective: (req, callback) => {
-    const { name, telephone, address, openingHours, description } = req.body
+    const { name, telephone, address, openingHours, description, categoryId } = req.body
     if (!name) throw new Error('Objective name is required!')
 
     Promise.all([
@@ -25,14 +29,19 @@ const ObjectiveServices = {
           address,
           openingHours,
           description,
-          image: filePath || null
+          image: filePath || null,
+          categoryId
         })
       })
       .then(createdObjective => callback(null, { objective: createdObjective }))
       .catch(err => callback(err))
   },
   getObjective: (req, callback) => {
-    Objective.findByPk(req.params.id, { raw: true })
+    Objective.findByPk(req.params.id, {
+      raw: true,
+      nest: true,
+      include: [Category]
+    })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")
         callback(null, { objective })
@@ -40,7 +49,7 @@ const ObjectiveServices = {
       .catch(err => callback(err))
   },
   putObjective: (req, callback) => {
-    const { name, telephone, address, openingHours, description } = req.body
+    const { name, telephone, address, openingHours, description, categoryId } = req.body
     if (!name) throw new Error('Objective name is required!')
 
     Promise.all([
@@ -56,7 +65,8 @@ const ObjectiveServices = {
           address,
           openingHours,
           description,
-          image: filePath || null
+          image: filePath || null,
+          categoryId
         })
       })
       .then(updatedObjective => callback(null, { objective: updatedObjective }))

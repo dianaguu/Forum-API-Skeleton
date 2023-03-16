@@ -1,5 +1,5 @@
 /* eslint-disable */
-const { Objective } = requireWrapper('models')
+const { Objective, Category } = requireWrapper('models')
 const objectiveServices = requireWrapper('services/objective.services')
 /* eslint-enable */
 
@@ -7,8 +7,12 @@ const objectiveController = {
   getObjectives: (req, res, next) => {
     objectiveServices.getObjectives(req, (err, data) => err ? next(err) : res.render('admin/objectives', data))
   },
-  createObjective: (req, res) => {
-    return res.render('admin/objective-create-form')
+  createObjective: (req, res, next) => {
+    return Category.findAll({
+      raw: true
+    })
+      .then(categories => res.render('admin/objective-create-form', { categories }))
+      .catch(err => next(err))
   },
   postObjective: (req, res, next) => {
     objectiveServices.postObjective(req, (err, data) => {
@@ -22,10 +26,13 @@ const objectiveController = {
     objectiveServices.getObjective(req, (err, data) => err ? next(err) : res.render('admin/objective', data))
   },
   editObjective: (req, res, next) => {
-    Objective.findByPk(req.params.id, { raw: true })
-      .then(objective => {
+    return Promise.all([
+      Objective.findByPk(req.params.id, { raw: true }),
+      Category.findAll({ raw: true })
+    ])
+      .then(([objective, categories]) => {
         if (!objective) throw new Error("Objective didn't exist!")
-        res.render('admin/objective-edit-form', { objective })
+        res.render('admin/objective-edit-form', { objective, categories })
       })
       .catch(err => next(err))
   },
