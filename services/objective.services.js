@@ -23,7 +23,7 @@ const ObjectiveServices = {
     ])
       .then(([objective, filePath]) => {
         if (objective) throw new Error(`${name} already exist!`)
-        objective.update({
+        Objective.create({
           name,
           telephone,
           address,
