@@ -19,7 +19,6 @@ const categoryController = {
   },
   deleteCategory: (req, res, next) => {
     const id = req.params.id
-    const { name } = req.body
     categoryServices.deleteCategory(id, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
