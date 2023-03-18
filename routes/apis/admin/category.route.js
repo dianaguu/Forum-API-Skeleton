@@ -5,6 +5,7 @@ const categoryController = requireWrapper('controllers/apis/admin/category.contr
 /* eslint-enable */
 
 router.post('/create', categoryController.postCategory)
+router.put('/:id/update', categoryController.putCategory)
 router.get('/', categoryController.getCategories)
 
 module.exports = router

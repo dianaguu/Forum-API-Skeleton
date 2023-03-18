@@ -1,5 +1,5 @@
 {{>admin-tabs route='categories'}}
-<div class="d-flex align-items-center pt-3 pb-5 my-3 text-white-50 bg-purple">
+<div class="d-flex align-items-center">
   <form class="row" action="/admin/categories/create" method="POST">
     <div class="col-auto">
       <input class="form-control" type="text" placeholder="Category Name" name="name">
@@ -7,9 +7,12 @@
     <div class="col-auto">
       <button class="btn btn-success" type="submit">Create</button>
     </div>
+    <div class="col-auto">
+      <a class="btn btn-link link-success" href="/admin/categories">Reload</a>
+    </div>
   </form>
 </div>
-
+<br />
 <table class="table align-middle">
   <thead class="thead-dark">
     <tr>
@@ -22,14 +25,31 @@
     {{#each categories}}
     <tr>
       <th scope="row">{{this.id}}</th>
-      <td>{{this.name}}</td>
+      {{#ifCond this.id ../theCategory.id}}
       <td>
-        <button type="button" class="btn btn-link">
-          <a class="btn btn-link link-primary" href="/admin/categories/{{this.id}}/edit">
-            Edit
-          </a>
-        </button>
-        <form action="/admin/categories/{{this.id}}/delete?_method=DELETE" method="POST" style="display: inline;">
+        <form class="d-flex justify-content-between" action="/admin/categories/{{this.id}}/update?_method=PUT" method="POST">
+          <div class="col-auto">
+            <input class="form-control" type="text" name="name" value="{{this.name}}">
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-link link-danger" type="submit">Update</button>
+          </div>
+        </form>
+      </td>
+      {{else}}
+      <td>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="col-auto">
+            {{this.name}}
+          </div>
+          <div class="col-auto">
+            <a class="btn btn-link link-primary" href="/admin/categories/{{this.id}}/edit">Edit</a>
+          </div>
+        </div>
+      </td>
+      {{/ifCond}}
+      <td>
+        <form action="/admin/categories/{{this.id}}/delete?_method=DELETE" method="POST">
           <button type="submit" class="btn btn-link link-danger">Delete</button>
         </form>
       </td>
@@ -37,5 +57,3 @@
     {{/each}}
   </tbody>
 </table>
-<br />
-<br />

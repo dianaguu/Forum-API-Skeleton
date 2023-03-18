@@ -5,10 +5,17 @@ const categoryServices = requireWrapper('services/category.services')
 
 const categoryController = {
   getCategories: (req, res, next) => {
-    categoryServices.getCategories(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    const id = req.params.id
+    categoryServices.getCategories(id, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },
   postCategory: (req, res, next) => {
-    categoryServices.postCategory(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    const { name } = req.body
+    categoryServices.postCategory(name, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  putCategory: (req, res, next) => {
+    const id = req.params.id
+    const { name } = req.body
+    categoryServices.putCategory(id, name, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 
