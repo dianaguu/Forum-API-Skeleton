@@ -6,6 +6,7 @@ const categoryController = requireWrapper('controllers/apis/admin/category.contr
 
 router.post('/create', categoryController.postCategory)
 router.put('/:id/update', categoryController.putCategory)
+router.delete('/:id/delete', categoryController.deleteCategory)
 router.get('/', categoryController.getCategories)
 
 module.exports = router

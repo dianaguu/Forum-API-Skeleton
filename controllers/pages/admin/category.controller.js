@@ -26,6 +26,14 @@ const categoryController = {
       req.session.updatedData = data
       return res.redirect('/admin/categories')
     })
+  },
+  deleteCategory: (req, res, next) => {
+    const id = req.params.id
+    categoryServices.deleteCategory(id, (err, data) => {
+      if (err) return next(err)
+      req.session.deletedData = data
+      return res.redirect('/admin/categories')
+    })
   }
 }
 

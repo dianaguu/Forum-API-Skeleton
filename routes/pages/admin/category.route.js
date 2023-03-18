@@ -7,6 +7,7 @@ const categoryController = requireWrapper('controllers/pages/admin/category.cont
 router.post('/create', categoryController.postCategory)
 router.put('/:id/update', categoryController.putCategory)
 router.get('/:id/edit', categoryController.getCategories)
+router.delete('/:id/delete', categoryController.deleteCategory)
 router.get('/', categoryController.getCategories)
 
 // admin/categories

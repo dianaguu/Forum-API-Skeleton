@@ -36,6 +36,20 @@ const categoryServices = {
     } catch (err) {
       callback(err)
     }
+  },
+  deleteCategory: async (id, callback) => {
+    try {
+      const theCategory = await Category.findByPk(id)
+      if (!theCategory) {
+        const err = new Error(`Category(id:${id}) didn't exist!`)
+        err.status = 404
+        throw err
+      }
+      const deletedCategory = await theCategory.destroy()
+      callback(null, { objective: deletedCategory })
+    } catch (err) {
+      callback(err)
+    }
   }
 }
 
