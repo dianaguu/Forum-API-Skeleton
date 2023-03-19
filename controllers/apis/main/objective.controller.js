@@ -1,6 +1,17 @@
+/* eslint-disable */
+const objectiveServices = requireWrapper('services/objective.services')
+/* eslint-enable */
+
 const objectiveController = {
-  getObjectives: (req, res) => {
-    return res.send('[apis] objectiveController.getObjectives')
+  getObjectivesWithCategoryId: (req, res, next) => {
+    const categoryId = Number(req.query.categoryId) || ''
+    objectiveServices.getObjectivesWithCategoryId(categoryId, (err, data) => {
+      if (err) return next(err)
+      return res.json({
+        status: 'success',
+        data: { objectives: data.objectives }
+      })
+    })
   }
 }
 

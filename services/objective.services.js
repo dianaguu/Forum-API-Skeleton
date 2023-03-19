@@ -13,6 +13,26 @@ const ObjectiveServices = {
       .then(objectives => callback(null, { objectives }))
       .catch(err => callback(err))
   },
+  getObjectivesWithCategoryId: async (categoryId, callback) => {
+    try {
+      const [objectives, categories] = await Promise.all([
+        Objective.findAll({
+          raw: true,
+          nest: true,
+          include: [Category],
+          where: { ...categoryId ? { categoryId } : {} }
+        }),
+        Category.findAll({ raw: true })
+      ])
+      const shortDescriptionObjectives = objectives.map((element) => ({
+        ...element,
+        description: element.description.substring(0, 50)
+      }))
+      callback(null, { objectives: shortDescriptionObjectives, categories, categoryId })
+    } catch (err) {
+      callback(err)
+    }
+  },
   postObjective: (req, callback) => {
     const { name, telephone, address, openingHours, description, categoryId } = req.body
     if (!name) throw new Error('Objective name is required!')

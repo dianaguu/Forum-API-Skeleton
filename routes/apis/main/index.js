@@ -6,13 +6,13 @@ const { accountAuthenticated, requestAuthenticated, requestAuthenticatedAdmin } 
 /* eslint-enable */
 
 // objective
-router.use('/objectives', requestAuthenticated, requestAuthenticatedAdmin, require('./objective.route'))
+router.use('/objectives', requestAuthenticated, require('./objective.route'))
 
 // account
 router.post('/signup', accountController.signUp)
 router.post('/signin', accountAuthenticated, accountController.signIn)
 
-router.use('/', (req, res) =>
+router.use('/', requestAuthenticated, (req, res) =>
   res.status(400).json({ status: 'error', message: `${req.originalUrl} not found, or wrong http method` })
 )
 
