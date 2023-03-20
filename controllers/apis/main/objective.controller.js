@@ -9,7 +9,7 @@ const objectiveController = {
       if (err) return next(err)
       return res.json({
         status: 'success',
-        data: { objectives: data.objectives }
+        data: { count: Object.keys(data.objectives).length, objectives: data.objectives }
       })
     })
   }

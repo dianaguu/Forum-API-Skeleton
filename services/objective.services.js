@@ -1,6 +1,7 @@
 /* eslint-disable */
 const { Objective, Category } = requireWrapper('models')
-const { localFileHandler } = requireWrapper('helpers/file.helper') 
+const { localFileHandler } = requireWrapper('helpers/file.helper')
+const { getOffset, getPagination } = requireWrapper('helpers/pagination.helper')
 /* eslint-enable */
 
 const ObjectiveServices = {
@@ -13,22 +14,40 @@ const ObjectiveServices = {
       .then(objectives => callback(null, { objectives }))
       .catch(err => callback(err))
   },
-  getObjectivesWithCategoryId: async (categoryId, callback) => {
+  getObjectivesWithCategoryId: (categoryId, callback) => {
+    Objective.findAll({
+      raw: true,
+      nest: true,
+      include: [Category],
+      where: { ...categoryId ? { categoryId } : {} }
+    })
+      .then(objectives => callback(null, { objectives }))
+      .catch(err => callback(err))
+  },
+  getObjectivesWithCategoryIdAndPagination: async (categoryId, page, limit, callback) => {
     try {
+      const offset = getOffset(limit, page)
       const [objectives, categories] = await Promise.all([
-        Objective.findAll({
+        Objective.findAndCountAll({
           raw: true,
           nest: true,
           include: [Category],
-          where: { ...categoryId ? { categoryId } : {} }
+          where: { ...categoryId ? { categoryId } : {} },
+          limit,
+          offset
         }),
         Category.findAll({ raw: true })
       ])
-      const shortDescriptionObjectives = objectives.map((element) => ({
+      const shortDescriptionObjectives = await objectives.rows.map((element) => ({
         ...element,
         description: element.description.substring(0, 50)
       }))
-      callback(null, { objectives: shortDescriptionObjectives, categories, categoryId })
+      callback(null, {
+        objectives: shortDescriptionObjectives,
+        categories,
+        categoryId,
+        pagination: getPagination(limit, page, objectives.count)
+      })
     } catch (err) {
       callback(err)
     }
