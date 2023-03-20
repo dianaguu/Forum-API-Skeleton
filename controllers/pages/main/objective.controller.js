@@ -14,6 +14,9 @@ const objectiveController = {
       categoryId,
       page, limit,
       (err, data) => err ? next(err) : res.render('objectives', data))
+  },
+  getObjective: (req, res, next) => {
+    objectiveServices.getObjective(req, (err, data) => err ? next(err) : res.render('objective', data))
   }
 }
 
