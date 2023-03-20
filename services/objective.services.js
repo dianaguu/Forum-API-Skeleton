@@ -77,14 +77,13 @@ const ObjectiveServices = {
   },
   getObjective: (req, callback) => {
     Objective.findByPk(req.params.id, {
-      raw: true,
-      nest: true,
       include: [Category]
     })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")
-        callback(null, { objective })
+        return objective.increment('views')
       })
+      .then(objective => callback(null, { objective: objective.toJSON() }))
       .catch(err => callback(err))
   },
   putObjective: (req, callback) => {
@@ -122,6 +121,18 @@ const ObjectiveServices = {
         return objective.destroy()
       })
       .then(deletedObjective => callback(null, { objective: deletedObjective }))
+      .catch(err => callback(err))
+  },
+  getDashboard: (req, callback) => {
+    return Objective.findByPk(req.params.id, {
+      raw: true,
+      nest: true,
+      include: [Category]
+    })
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        callback(null, { objective })
+      })
       .catch(err => callback(err))
   }
 }

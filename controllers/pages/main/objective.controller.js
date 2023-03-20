@@ -17,6 +17,9 @@ const objectiveController = {
   },
   getObjective: (req, res, next) => {
     objectiveServices.getObjective(req, (err, data) => err ? next(err) : res.render('objective', data))
+  },
+  getDashboard: (req, res, next) => {
+    objectiveServices.getDashboard(req, (err, data) => err ? next(err) : res.render('dashboard', data))
   }
 }
 
