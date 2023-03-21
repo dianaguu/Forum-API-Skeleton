@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       Objective.belongsTo(models.Category, { foreignKey: 'categoryId' })
+      Objective.hasMany(models.Comment, { foreignKey: 'objectiveId' })
     }
   }
   Objective.init({
