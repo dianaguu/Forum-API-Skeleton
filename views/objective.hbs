@@ -1,23 +1,35 @@
-<div class="row mb-5">
-  <div class="col-md-12">
-    <h1>{{objective.name}}</h1>
-    <p>[{{objective.Category.name}}]</p>
-  </div>
-  <div class="col-md-4">
-    <img class="img-responsive center-block mb-5" src="{{objective.image}}"
-      style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
-    <div class="well">
-      <ul class="list-unstyled">
-        <li><strong>Opening Hour:</strong> {{objective.openingHours}}</li>
-        <li><strong>Telephone:</strong> {{objective.telephone}}</li>
-        <li><strong>Address:</strong> {{objective.address}}</li>
-      </ul>
+{{!-- objective --}}
+<div class="row">
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <h1>{{objective.name}}</h1>
+      <p>[{{objective.Category.name}}]</p>
     </div>
+    <div class="col-md-4">
+      <img class="img-responsive center-block mb-5" src="{{objective.image}}"
+        style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+      <div class="well">
+        <ul class="list-unstyled">
+          <li><strong>Opening Hour:</strong> {{objective.openingHours}}</li>
+          <li><strong>Telephone:</strong> {{objective.telephone}}</li>
+          <li><strong>Address:</strong> {{objective.address}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <p style="white-space: break-spaces;">{{objective.description}}</p>
+      <a class="btn btn-primary" href="/objectives/{{objective.id}}/dashboard">Dashboard</a>
+    </div>
+    <hr>
   </div>
-  <div class="col-md-8">
-    <p style="white-space: break-spaces;">{{objective.description}}</p>
-    <a class="btn btn-primary" href="/objectives/{{objective.id}}/dashboard">Dashboard</a>
-  </div>
-  <hr>
-</div>
-<a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
+
+  {{!-- comment --}}
+  <form action="/comments/create" method="POST">
+    <div class="form-row mb-3">
+      <label class="form-label" for="text">Comment：</label>
+      <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+    </div>
+    <input type="hidden" name="objectiveId" value="{{objective.id}}" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
+  </form>

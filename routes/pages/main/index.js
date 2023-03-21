@@ -8,6 +8,8 @@ const { requestAuthenticated } = requireWrapper('middlewares/pageAuthentication'
 
 // objective
 router.use('/objectives', requestAuthenticated, require('./objective.route'))
+// comment
+router.use('/comments', requestAuthenticated, require('./comment.route'))
 
 // account
 router.get('/signup', accountController.signUpPage)
