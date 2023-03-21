@@ -23,6 +23,15 @@ const commentServices = {
     } catch (err) {
       callback(err)
     }
+  },
+  deleteComment: (id, callback) => {
+    return Comment.findByPk(id)
+      .then(comment => {
+        if (!comment) throw new Error("Comment didn't exist!")
+        return comment.destroy()
+      })
+      .then(deletedComment => callback(null, { comment: deletedComment.toJSON() }))
+      .catch(err => callback(err))
   }
 }
 

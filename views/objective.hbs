@@ -30,6 +30,12 @@
   <p>- no comment -</p>
 {{else}}
   {{#each objective.Comments}}
+    {{#if ../user.isAdmin}}
+    <form action="/comments/{{this.id}}/delete?_method=DELETE" method="POST" class="float-end">
+      <button type="submit" class="btn btn-danger"
+        onclick="return confirm(`Are you sure you want to delete the comment ?`)">Delete</button>
+    </form>
+    {{/if}}
     <blockquote class="blockquote mb-0">
       <h5><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h5>
       <p>{{this.text}}</p>
@@ -38,8 +44,6 @@
     <hr />
   {{/each}}
 {{/ifCond}}
-
-
 
 {{!-- comment --}}
 <form action="/comments/create" method="POST">

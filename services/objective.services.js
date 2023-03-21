@@ -137,13 +137,13 @@ const ObjectiveServices = {
   },
   getDashboard: (req, callback) => {
     return Objective.findByPk(req.params.id, {
-      raw: true,
-      nest: true,
-      include: [Category]
+      include: [Category,
+        { model: Comment, include: User }
+      ]
     })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")
-        callback(null, { objective })
+        callback(null, { objective: objective.toJSON() })
       })
       .catch(err => callback(err))
   }
