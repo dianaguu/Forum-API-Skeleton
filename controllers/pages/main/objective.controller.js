@@ -15,8 +15,9 @@ const objectiveController = {
       page, limit,
       (err, data) => err ? next(err) : res.render('objectives', data))
   },
-  getObjective: (req, res, next) => {
-    objectiveServices.getObjective(req, (err, data) => err ? next(err) : res.render('objective', data))
+  getObjectiveWithComments: (req, res, next) => {
+    const id = req.params.id
+    objectiveServices.getObjectiveWithComments(id, (err, data) => err ? next(err) : res.render('objective', data))
   },
   getDashboard: (req, res, next) => {
     objectiveServices.getDashboard(req, (err, data) => err ? next(err) : res.render('dashboard', data))

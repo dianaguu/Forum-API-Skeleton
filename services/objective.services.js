@@ -1,5 +1,5 @@
 /* eslint-disable */
-const { Objective, Category } = requireWrapper('models')
+const { Objective, Category, Comment, User } = requireWrapper('models')
 const { localFileHandler } = requireWrapper('helpers/file.helper')
 const { getOffset, getPagination } = requireWrapper('helpers/pagination.helper')
 /* eslint-enable */
@@ -52,6 +52,29 @@ const ObjectiveServices = {
       callback(err)
     }
   },
+  getObjective: (req, callback) => {
+    Objective.findByPk(req.params.id, {
+      include: [Category]
+    })
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        return objective.increment('views')
+      })
+      .then(objective => callback(null, { objective: objective.toJSON() }))
+      .catch(err => callback(err))
+  },
+  getObjectiveWithComments: (id, callback) => {
+    Objective.findByPk(id, {
+      include: [Category,
+        { model: Comment, include: User }]
+    })
+      .then(objective => {
+        if (!objective) throw new Error("Objective didn't exist!")
+        return objective.increment('views')
+      })
+      .then(objective => callback(null, { objective: objective.toJSON() }))
+      .catch(err => callback(err))
+  },
   postObjective: (req, callback) => {
     const { name, telephone, address, openingHours, description, categoryId } = req.body
     if (!name) throw new Error('Objective name is required!')
@@ -73,17 +96,6 @@ const ObjectiveServices = {
         })
       })
       .then(createdObjective => callback(null, { objective: createdObjective }))
-      .catch(err => callback(err))
-  },
-  getObjective: (req, callback) => {
-    Objective.findByPk(req.params.id, {
-      include: [Category]
-    })
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        return objective.increment('views')
-      })
-      .then(objective => callback(null, { objective: objective.toJSON() }))
       .catch(err => callback(err))
   },
   putObjective: (req, callback) => {

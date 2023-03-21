@@ -1,6 +1,6 @@
 {{!-- objective --}}
 <div class="row">
-  <div class="row mb-5">
+  <div class="row mb-2">
     <div class="col-md-12">
       <h1>{{objective.name}}</h1>
       <p>[{{objective.Category.name}}]</p>
@@ -22,14 +22,32 @@
     </div>
     <hr>
   </div>
+</div>
 
-  {{!-- comment --}}
-  <form action="/comments/create" method="POST">
-    <div class="form-row mb-3">
-      <label class="form-label" for="text">Comment：</label>
-      <textarea class="form-control" id="text" name="text" rows="3"></textarea>
-    </div>
-    <input type="hidden" name="objectiveId" value="{{objective.id}}" />
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
-  </form>
+{{!-- display all comments --}}
+<h4 class="mb-2" style="font-weight: bold">All Comments：</h4>
+{{#ifCond objective.Comments.length 0}}
+  <p>- no comment -</p>
+{{else}}
+  {{#each objective.Comments}}
+    <blockquote class="blockquote mb-0">
+      <h5><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h5>
+      <p>{{this.text}}</p>
+      <footer class="blockquote-footer">{{relativeTimeFromNow this.createdAt}}</footer>
+    </blockquote>
+    <hr />
+  {{/each}}
+{{/ifCond}}
+
+
+
+{{!-- comment --}}
+<form action="/comments/create" method="POST">
+  <div class="form-row mb-3">
+    <label class="form-label" for="text" style="font-size: 24px; font-weight: bold">Comment：</label>
+    <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+  </div>
+  <input type="hidden" name="objectiveId" value="{{objective.id}}" />
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>
+</form>
