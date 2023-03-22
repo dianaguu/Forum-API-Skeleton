@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       Objective.belongsTo(models.Category, { foreignKey: 'categoryId' })
       Objective.hasMany(models.Comment, { foreignKey: 'objectiveId' })
+      Objective.belongsToMany(models.User, {
+        through: models.Favorite,
+        foreignKey: 'objectiveId',
+        as: 'FavoriteUsers'
+      })
     }
   }
   Objective.init({
