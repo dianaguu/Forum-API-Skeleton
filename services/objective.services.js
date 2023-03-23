@@ -40,10 +40,12 @@ const ObjectiveServices = {
       ])
 
       const favoriteObjectivesId = user && user.FavoriteObjectives.map(element => element.id)
+      const likeObjectivesId = user && user.LikeObjectives.map(element => element.id)
       const shortDescriptionObjectives = await objectives.rows.map((element) => ({
         ...element,
         description: element.description.substring(0, 50),
-        isFavorite: favoriteObjectivesId.includes(element.id)
+        isFavorite: favoriteObjectivesId.includes(element.id),
+        isLike: likeObjectivesId.includes(element.id)
       }))
       callback(null, {
         objectives: shortDescriptionObjectives,
@@ -70,7 +72,8 @@ const ObjectiveServices = {
     Objective.findByPk(id, {
       include: [Category,
         { model: Comment, include: User },
-        { model: User, as: 'FavoriteUsers' }]
+        { model: User, as: 'FavoriteUsers' },
+        { model: User, as: 'LikeUsers' }]
     })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")
@@ -78,7 +81,8 @@ const ObjectiveServices = {
       })
       .then(objective => {
         const isFavorite = objective.FavoriteUsers.some(element => element.id === user.id)
-        callback(null, { objective: objective.toJSON(), isFavorite })
+        const isLike = objective.LikeUsers.some(element => element.id === user.id)
+        callback(null, { objective: objective.toJSON(), isFavorite, isLike })
       })
       .catch(err => callback(err))
   },
@@ -146,7 +150,8 @@ const ObjectiveServices = {
     return Objective.findByPk(req.params.id, {
       include: [Category,
         { model: Comment, include: User },
-        { model: User, as: 'FavoriteUsers' }]
+        { model: User, as: 'FavoriteUsers' },
+        { model: User, as: 'LikeUsers' }]
     })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")

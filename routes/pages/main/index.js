@@ -12,6 +12,8 @@ router.use('/objectives', requestAuthenticated, require('./objective.route'))
 router.use('/comments', requestAuthenticated, require('./comment.route'))
 // favorite
 router.use('/favorite', requestAuthenticated, require('./favorite.route'))
+// like
+router.use('/like', requestAuthenticated, require('./like.route'))
 
 // account
 router.get('/signup', accountController.signUpPage)
