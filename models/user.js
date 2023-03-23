@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'FavoriteObjectives'
       })
+      User.belongsToMany(models.Objective, {
+        through: models.Like,
+        foreignKey: 'userId',
+        as: 'LikeObjectives'
+      })
     }
   }
   User.init({
