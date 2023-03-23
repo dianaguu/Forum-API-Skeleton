@@ -4,6 +4,7 @@ const objectiveServices = requireWrapper('services/objective.services')
 
 const objectiveController = {
   getObjectivesWithCategoryIdAndPagination: (req, res, next) => {
+    const user = req.user
     const categoryId = Number(req.query.categoryId) || ''
 
     const DEFAULT_LIMIT = 9
@@ -11,13 +12,15 @@ const objectiveController = {
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
 
     objectiveServices.getObjectivesWithCategoryIdAndPagination(
+      user,
       categoryId,
       page, limit,
       (err, data) => err ? next(err) : res.render('objectives', data))
   },
   getObjectiveWithComments: (req, res, next) => {
+    const user = req.user
     const id = req.params.id
-    objectiveServices.getObjectiveWithComments(id, (err, data) => err ? next(err) : res.render('objective', data))
+    objectiveServices.getObjectiveWithComments(user, id, (err, data) => err ? next(err) : res.render('objective', data))
   },
   getDashboard: (req, res, next) => {
     objectiveServices.getDashboard(req, (err, data) => err ? next(err) : res.render('dashboard', data))

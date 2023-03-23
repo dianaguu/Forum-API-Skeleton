@@ -19,6 +19,15 @@
     <div class="col-md-8">
       <p style="white-space: break-spaces;">{{objective.description}}</p>
       <a class="btn btn-primary" href="/objectives/{{objective.id}}/dashboard">Dashboard</a>
+      {{#if isFavorite}}
+      <form action="/favorite/{{objective.id}}/remove?_method=DELETE" method="POST" style="display: contents;">
+        <button type="submit" class="btn btn-danger m-3">Remove</button>
+      </form>
+      {{else}}
+      <form action="/favorite/{{objective.id}}/add" method="POST" style="display: contents;">
+        <button type="submit" class="btn btn-primary m-3">Add</button>
+      </form>
+      {{/if}}
     </div>
     <hr>
   </div>

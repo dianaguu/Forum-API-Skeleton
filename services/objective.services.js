@@ -24,7 +24,7 @@ const ObjectiveServices = {
       .then(objectives => callback(null, { objectives }))
       .catch(err => callback(err))
   },
-  getObjectivesWithCategoryIdAndPagination: async (categoryId, page, limit, callback) => {
+  getObjectivesWithCategoryIdAndPagination: async (user, categoryId, page, limit, callback) => {
     try {
       const offset = getOffset(limit, page)
       const [objectives, categories] = await Promise.all([
@@ -38,9 +38,12 @@ const ObjectiveServices = {
         }),
         Category.findAll({ raw: true })
       ])
+
+      const favoriteObjectivesId = user && user.FavoriteObjectives.map(element => element.id)
       const shortDescriptionObjectives = await objectives.rows.map((element) => ({
         ...element,
-        description: element.description.substring(0, 50)
+        description: element.description.substring(0, 50),
+        isFavorite: favoriteObjectivesId.includes(element.id)
       }))
       callback(null, {
         objectives: shortDescriptionObjectives,
@@ -63,16 +66,20 @@ const ObjectiveServices = {
       .then(objective => callback(null, { objective: objective.toJSON() }))
       .catch(err => callback(err))
   },
-  getObjectiveWithComments: (id, callback) => {
+  getObjectiveWithComments: (user, id, callback) => {
     Objective.findByPk(id, {
       include: [Category,
-        { model: Comment, include: User }]
+        { model: Comment, include: User },
+        { model: User, as: 'FavoriteUsers' }]
     })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")
         return objective.increment('views')
       })
-      .then(objective => callback(null, { objective: objective.toJSON() }))
+      .then(objective => {
+        const isFavorite = objective.FavoriteUsers.some(element => element.id === user.id)
+        callback(null, { objective: objective.toJSON(), isFavorite })
+      })
       .catch(err => callback(err))
   },
   postObjective: (req, callback) => {
@@ -138,8 +145,8 @@ const ObjectiveServices = {
   getDashboard: (req, callback) => {
     return Objective.findByPk(req.params.id, {
       include: [Category,
-        { model: Comment, include: User }
-      ]
+        { model: Comment, include: User },
+        { model: User, as: 'FavoriteUsers' }]
     })
       .then(objective => {
         if (!objective) throw new Error("Objective didn't exist!")

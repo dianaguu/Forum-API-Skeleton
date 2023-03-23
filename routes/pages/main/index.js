@@ -10,6 +10,8 @@ const { requestAuthenticated } = requireWrapper('middlewares/pageAuthentication'
 router.use('/objectives', requestAuthenticated, require('./objective.route'))
 // comment
 router.use('/comments', requestAuthenticated, require('./comment.route'))
+// favorite
+router.use('/favorite', requestAuthenticated, require('./favorite.route'))
 
 // account
 router.get('/signup', accountController.signUpPage)
