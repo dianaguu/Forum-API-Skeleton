@@ -44,7 +44,9 @@ passport.deserializeUser((id, done) => {
   return User.findByPk(id, {
     include: [
       { model: Objective, as: 'FavoriteObjectives' },
-      { model: Objective, as: 'LikeObjectives' }]
+      { model: Objective, as: 'LikeObjectives' },
+      { model: User, as: 'Followers' },
+      { model: User, as: 'Followings' }]
   })
     .then(user => done(null, user.toJSON()))
     .catch(err => done(err, false))
