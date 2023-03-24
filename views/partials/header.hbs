@@ -18,9 +18,12 @@
             <span class="text-white nav-link">Hi, {{ user.email }}</span>
           </li>
           <li class="nav-item">
-            {{!-- <a href="/signoff"><button class="btn btn-outline-success my-sm-0 my-2">Logout</button></a> --}}
+            {{!-- <a href="/users/{{ user.id }}" class="nav-link text-white"> Profile </a> --}}
+            <button class="btn btn-outline-light my-sm-0 my-2 me-1" onclick="window.location.href='/users/{{ user.id }}';">Profile</button>
+          </li>
+          <li class="nav-item">
             <form class="form-signoff" action="/signoff" method="POST">
-              <button class="btn btn-outline-success my-sm-0 my-2" type="submit">Sign Off</button>
+              <button class="btn btn-outline-danger my-sm-0 my-2" type="submit">Sign Off</button>
             </form>
           </li>
         </ul>

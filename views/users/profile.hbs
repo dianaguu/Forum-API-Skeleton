@@ -1,0 +1,63 @@
+<div class="card mb-3">
+  {{!-- dashboard --}}
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      {{#if user.image}}
+      <img src="{{user.image}}" width="300px" height="300px" style="transition: opacity 0.5s; opacity:0;"
+        onload="this.style.opacity=1;" />
+      {{else}}
+      <img src="https://via.placeholder.com/300" width="300px" height="300px"
+        style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+      {{/if}}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{user.name}}</h5>
+        <p class="card-text">
+          {{user.email}}
+        </p>
+        <hr />
+        <ul class="list-unstyled list-inline">
+          <li>My Comment Objectives :  <strong>{{user.CommentObjectives.length}}</strong></li>
+          <li>My Favorite Objectives :  <strong>{{user.FavoriteObjectives.length}}</strong> </li>
+        </ul>
+        <a href="/users/{{user.id}}/edit"><button type="submit" class="btn btn-primary">edit</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- dashboard detail --}}
+<div class="row">
+  <div class="col-md-4">
+  <div class="col-md-8">
+    {{!-- comment --}}
+    <div class="card">
+      <div class="card-header">
+        Comment Objectives (<strong>{{user.CommentObjectives.length}}</strong>)
+      </div>
+      <div class="card-body">
+        {{#each user.CommentObjectives}}
+        <a href="/objectives/{{this.id}}" class="text-decoration-none">
+          <img src={{this.image}} width="60" height="60" class="avatar" style="transition: opacity 0.5s; opacity:0;"
+            onload="this.style.opacity=1;" />
+        </a>
+        {{/each}}
+      </div>
+    </div>
+    <br />
+    {{!-- favorite --}}
+    <div class="card">
+      <div class="card-header">
+        Favorite Objectives (<strong>{{user.FavoriteObjectives.length}}</strong>)
+      </div>
+      <div class="card-body">
+        {{#each user.FavoriteObjectives}}
+        <a href="/objectives/{{this.id}}" class="text-decoration-none">
+          <img src="{{this.image}}" width="60" height="60" class="avatar" style="transition: opacity 0.5s; opacity:0;"
+            onload="this.style.opacity=1;" />
+        </a>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
