@@ -10,10 +10,13 @@ const { requestAuthenticated } = requireWrapper('middlewares/pageAuthentication'
 router.use('/objectives', requestAuthenticated, require('./objective.route'))
 // comment
 router.use('/comments', requestAuthenticated, require('./comment.route'))
+
 // favorite
 router.use('/favorite', requestAuthenticated, require('./favorite.route'))
 // like
 router.use('/like', requestAuthenticated, require('./like.route'))
+// follow
+router.use('/follow', requestAuthenticated, require('./follow.route'))
 
 // user
 router.use('/users', requestAuthenticated, require('./user.route'))

@@ -9,7 +9,9 @@ const userServices = {
       let user = await User.findByPk(id, {
         include: [
           { model: Comment, include: Objective },
-          { model: Objective, as: 'FavoriteObjectives' }]
+          { model: Objective, as: 'FavoriteObjectives' },
+          { model: User, as: 'Followers' },
+          { model: User, as: 'Followings' }]
       })
       if (!user) throw new Error("User didn't exist!")
 

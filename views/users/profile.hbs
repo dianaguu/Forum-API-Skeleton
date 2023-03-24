@@ -18,8 +18,11 @@
         </p>
         <hr />
         <ul class="list-unstyled list-inline">
-          <li>My Comment Objectives :  <strong>{{user.CommentObjectives.length}}</strong></li>
-          <li>My Favorite Objectives :  <strong>{{user.FavoriteObjectives.length}}</strong> </li>
+              <li>My Followers：<strong>{{user.Followers.length}}</strong></li>
+              <li>My Followings：<strong>{{user.Followings.length}}</strong> </li>
+          <li>My Comment Objectives：<strong>{{user.CommentObjectives.length}}</strong></li>
+          <li>My Favorite Objectives：<strong>{{user.FavoriteObjectives.length}}</strong> </li>
+
         </ul>
         <a href="/users/{{user.id}}/edit"><button type="submit" class="btn btn-primary">edit</button></a>
       </div>
@@ -29,6 +32,46 @@
 {{!-- dashboard detail --}}
 <div class="row">
   <div class="col-md-4">
+    {{!-- follower --}}
+    <div class="card">
+      <div class="card-header">
+        Follower (<strong>{{user.Followers.length}}</strong>)
+      </div>
+      <div class="card-body">
+        {{#each user.Followers}}
+        <a href="/users/{{this.id}}" class="text-decoration-none">
+          {{#if this.image}}
+          <img src="{{this.image}}" width="60" height="60" class="avatar" style="transition: opacity 0.5s; opacity:0;"
+            onload="this.style.opacity=1;" />
+          {{else}}
+          <img src="https://via.placeholder.com/60" width="60" height="60" class="avatar"
+            style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+          {{/if}}
+        </a>
+        {{/each}}
+      </div>
+    </div>
+    <br />
+    {{!-- following --}}
+    <div class="card">
+      <div class="card-header">
+        Followings (<strong>{{user.Followings.length}}</strong>)
+      </div>
+      <div class="card-body">
+        {{#each user.Followings}}
+        <a href="/users/{{this.id}}" class="text-decoration-none">
+          {{#if this.image}}
+          <img src="{{this.image}}" width="60" height="60" class="avatar" style="transition: opacity 0.5s; opacity:0;"
+            onload="this.style.opacity=1;" />
+          {{else}}
+          <img src="https://via.placeholder.com/60" width="60" height="60" class="avatar"
+            style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+          {{/if}}
+        </a>
+        {{/each}}
+      </div>
+    </div>
+  </div>
   <div class="col-md-8">
     {{!-- comment --}}
     <div class="card">
