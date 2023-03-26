@@ -20,6 +20,21 @@ const objectiveController = {
     const user = req.user
     const id = req.params.id
     objectiveServices.getObjectiveWithComments(user, id, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  getDashboard: (req, res, next) => {
+    objectiveServices.getDashboard(req, (err, data) => {
+      if (err) return next(err)
+      return res.json({
+        status: 'success',
+        data: {
+          'objective name': data.objective.name,
+          views: data.objective.views,
+          comments: Object.keys(data.objective.Comments).length,
+          favorites: Object.keys(data.objective.FavoriteUsers).length,
+          likes: Object.keys(data.objective.LikeUsers).length
+        }
+      })
+    })
   }
 }
 
