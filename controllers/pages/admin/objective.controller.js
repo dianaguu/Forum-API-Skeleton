@@ -5,7 +5,8 @@ const objectiveServices = requireWrapper('services/objective.services')
 
 const objectiveController = {
   getObjectives: (req, res, next) => {
-    objectiveServices.getObjectives(req, (err, data) => err ? next(err) : res.render('admin/objectives', data))
+    const categoryId = ''
+    objectiveServices.getObjectives(categoryId, (err, data) => err ? next(err) : res.render('admin/objectives', data))
   },
   createObjective: (req, res, next) => {
     return Category.findAll({

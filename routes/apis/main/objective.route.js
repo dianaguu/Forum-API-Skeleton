@@ -5,6 +5,6 @@ const objectiveController = requireWrapper('controllers/apis/main/objective.cont
 /* eslint-enable */
 
 router.get('/:id', objectiveController.getObjectiveWithComments)
-router.get('', objectiveController.getObjectivesWithCategoryId)
+router.get('/', objectiveController.getObjectives)
 
 module.exports = router

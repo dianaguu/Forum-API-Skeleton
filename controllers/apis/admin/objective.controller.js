@@ -4,7 +4,17 @@ const objectiveServices = requireWrapper('services/objective.services')
 
 const objectiveController = {
   getObjectives: (req, res, next) => {
-    objectiveServices.getObjectives(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    const categoryId = ''
+    objectiveServices.getObjectives(categoryId, (err, data) => {
+      if (err) return next(err)
+      return res.json({
+        status: 'success',
+        data: {
+          count: Object.keys(data.objectives).length,
+          objectives: data.objectives
+        }
+      })
+    })
   },
   postObjective: (req, res, next) => {
     objectiveServices.postObjective(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))

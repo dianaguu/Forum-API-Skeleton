@@ -7,6 +7,6 @@ router.get('/topTen', objectiveController.getTopTen)
 router.get('/feed', objectiveController.getFeed)
 router.get('/:id/dashboard', objectiveController.getDashboard)
 router.get('/:id', objectiveController.getObjectiveWithComments)
-router.get('/', objectiveController.getObjectivesWithCategoryIdAndPagination)
+router.get('/', objectiveController.getObjectivesWithPagination)
 
 module.exports = router

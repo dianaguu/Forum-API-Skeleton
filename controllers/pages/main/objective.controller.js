@@ -3,7 +3,7 @@ const objectiveServices = requireWrapper('services/objective.services')
 /* eslint-enable */
 
 const objectiveController = {
-  getObjectivesWithCategoryIdAndPagination: (req, res, next) => {
+  getObjectivesWithPagination: (req, res, next) => {
     const user = req.user
     const categoryId = Number(req.query.categoryId) || ''
 
@@ -11,7 +11,7 @@ const objectiveController = {
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
 
-    objectiveServices.getObjectivesWithCategoryIdAndPagination(
+    objectiveServices.getObjectivesWithPagination(
       user,
       categoryId,
       page, limit,

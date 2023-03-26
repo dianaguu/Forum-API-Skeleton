@@ -5,16 +5,7 @@ const { getOffset, getPagination } = requireWrapper('helpers/pagination.helper')
 /* eslint-enable */
 
 const ObjectiveServices = {
-  getObjectives: (req, callback) => {
-    Objective.findAll({
-      raw: true,
-      nest: true,
-      include: [Category]
-    })
-      .then(objectives => callback(null, { objectives }))
-      .catch(err => callback(err))
-  },
-  getObjectivesWithCategoryId: (categoryId, callback) => {
+  getObjectives: (categoryId, callback) => {
     Objective.findAll({
       raw: true,
       nest: true,
@@ -24,7 +15,7 @@ const ObjectiveServices = {
       .then(objectives => callback(null, { objectives }))
       .catch(err => callback(err))
   },
-  getObjectivesWithCategoryIdAndPagination: async (user, categoryId, page, limit, callback) => {
+  getObjectivesWithPagination: async (user, categoryId, page, limit, callback) => {
     try {
       const offset = getOffset(limit, page)
       const [objectives, categories] = await Promise.all([
