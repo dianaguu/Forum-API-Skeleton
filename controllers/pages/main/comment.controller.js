@@ -13,8 +13,9 @@ const commentController = {
     })
   },
   deleteComment: (req, res, next) => {
-    const id = req.params.id
-    commentServices.deleteComment(id, (err, data) => {
+    const commentId = req.params.id
+    const userIsAdmin = req.user.isAdmin
+    commentServices.deleteComment(commentId, userIsAdmin, (err, data) => {
       if (err) return next(err)
       req.session.deletedData = data
       return res.redirect(`/objectives/${data.comment.objectiveId}`)

@@ -24,8 +24,14 @@ const commentServices = {
       callback(err)
     }
   },
-  deleteComment: (id, callback) => {
-    return Comment.findByPk(id)
+  deleteComment: (commentId, userIsAdmin, callback) => {
+    if (!userIsAdmin) {
+      const err = new Error('insufficient privilege')
+      err.status = 403
+      throw err
+    }
+
+    return Comment.findByPk(commentId)
       .then(comment => {
         if (!comment) throw new Error("Comment didn't exist!")
         return comment.destroy()
