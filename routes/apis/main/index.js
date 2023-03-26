@@ -10,6 +10,11 @@ router.use('/objectives', requestAuthenticated, require('./objective.route'))
 // comment
 router.use('/comments', requestAuthenticated, require('./comment.route'))
 
+// favorite
+router.use('/favorite', requestAuthenticated, require('./favorite.route'))
+// like
+router.use('/like', requestAuthenticated, require('./like.route'))
+
 // account
 router.post('/signup', accountController.signUp)
 router.post('/signin', accountAuthenticated, accountController.signIn)
