@@ -24,6 +24,14 @@ const objectiveController = {
   },
   getDashboard: (req, res, next) => {
     objectiveServices.getDashboard(req, (err, data) => err ? next(err) : res.render('dashboard', data))
+  },
+  getTopTen: (req, res, next) => {
+    const reqUser = req.user
+    objectiveServices.getTopTen(reqUser, (err, data) => err ? next(err) : res.render('objective-top-ten', data))
+  },
+  getFeed: (req, res, next) => {
+    objectiveServices.getFeed(req, (err, data) => err ? next(err) : res.render('feed', data))
+    // objectiveServices.getFeed(req, res, next)
   }
 }
 

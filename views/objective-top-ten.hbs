@@ -1,0 +1,34 @@
+{{> objective-tabs route='topTenObjective'}}
+<h2>Top 10 Objective</h2>
+<hr />
+<div class="d-flex flex-column align-items-center">
+  {{#each objectives}}
+  <div class="card mb-3 h-100 m-1" style="max-width: 540px;break-inside: avoid;">
+    <div class="row no-gutters g-0">
+      <div class="col-md-4">
+        <a href="/objectives/{{this.id}}">
+          <img class="card-img img-fluid" src="{{this.image}}" style="transition: opacity 0.5s; opacity:0;"
+            onload="this.style.opacity=1;">
+        </a>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><a class="link-primary" href="/objectives/{{this.id}}">{{this.name}}</a></h5>
+          <span class="bg-secondary badge bg-secondary">Favorite：{{this.favoriteCount}}</span>
+          <p class="my-4 card-text" style="white-space: break-spaces;">{{this.description}}</p>
+          <a href="/objectives/{{this.id}}"><button type="button" class="btn btn-primary">Show</button></a>
+          {{#if isFavorite}}
+          <form action="/favorite/{{this.id}}/remove?_method=DELETE" method="POST" style="display: contents;">
+            <button type="submit" class="btn btn-primary m-1">Favorite</button>
+          </form>
+          {{else}}
+          <form action="/favorite/{{this.id}}/add" method="POST" style="display: contents;">
+            <button type="submit" class="btn btn-outline-muted m-1" style="color:gray;">Favorite</button>
+          </form>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>

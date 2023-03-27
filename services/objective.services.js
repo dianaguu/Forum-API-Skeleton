@@ -158,6 +158,48 @@ const ObjectiveServices = {
         callback(null, { objective: objective.toJSON() })
       })
       .catch(err => callback(err))
+  },
+  getTopTen: async (reqUser, callback) => {
+    try {
+      const objectives = await Objective.findAll({
+        include: { model: User, as: 'FavoriteUsers' }
+      })
+      const preprocessedObjectives = await objectives.map((objective) => ({
+        ...objective.toJSON(),
+        description: objective.description.substring(0, 50),
+        favoriteCount: objective.FavoriteUsers.length,
+        isFavorite: reqUser?.FavoriteObjectives.map(favoriteObjectives =>
+          favoriteObjectives.id).includes(objective.id)
+      }))
+        .sort((a, b) => b.favoriteCount - a.favoriteCount)
+        .slice(0, 10)
+      callback(null, { objectives: preprocessedObjectives })
+    } catch (err) {
+      callback(err)
+    }
+  },
+  getFeed: async (req, callback) => {
+    try {
+      const [objectives, comments] = await Promise.all([
+        Objective.findAll({
+          limit: 10,
+          order: [['createdAt', 'DESC']],
+          include: [Category],
+          raw: true,
+          nest: true
+        }),
+        Comment.findAll({
+          limit: 10,
+          order: [['createdAt', 'DESC']],
+          include: [User, Objective],
+          raw: true,
+          nest: true
+        })
+      ])
+      callback(null, { objectives, comments })
+    } catch (err) {
+      callback(err)
+    }
   }
 }
 
