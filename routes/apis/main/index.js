@@ -14,6 +14,8 @@ router.use('/comments', requestAuthenticated, require('./comment.route'))
 router.use('/favorite', requestAuthenticated, require('./favorite.route'))
 // like
 router.use('/like', requestAuthenticated, require('./like.route'))
+// follow
+router.use('/follow', requestAuthenticated, require('./follow.route'))
 
 // user
 router.use('/users', requestAuthenticated, require('./user.route'))
