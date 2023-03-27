@@ -24,7 +24,9 @@
           <li>My Favorite Objectives：<strong>{{user.FavoriteObjectives.length}}</strong> </li>
 
         </ul>
+        {{#if user.isSignIn}}
         <a href="/users/{{user.id}}/edit"><button type="submit" class="btn btn-primary">edit</button></a>
+        {{/if}}
       </div>
     </div>
   </div>

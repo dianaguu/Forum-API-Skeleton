@@ -7,6 +7,8 @@ const { requestAuthenticated, requestAuthenticatedAdmin } = requireWrapper('midd
 // objective
 router.use('/objectives', requestAuthenticated, requestAuthenticatedAdmin, require('./objective.route'))
 router.use('/categories', requestAuthenticated, requestAuthenticatedAdmin, require('./category.route'))
+
+// user
 router.use('/users', requestAuthenticated, requestAuthenticatedAdmin, require('./user.route'))
 
 router.use('/', requestAuthenticated, requestAuthenticatedAdmin, (req, res) =>

@@ -15,6 +15,9 @@ router.use('/favorite', requestAuthenticated, require('./favorite.route'))
 // like
 router.use('/like', requestAuthenticated, require('./like.route'))
 
+// user
+router.use('/users', requestAuthenticated, require('./user.route'))
+
 // account
 router.post('/signup', accountController.signUp)
 router.post('/signin', accountAuthenticated, accountController.signIn)
