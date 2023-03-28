@@ -18,6 +18,11 @@ router.use('/like', requestAuthenticated, require('./like.route'))
 // follow
 router.use('/follow', requestAuthenticated, require('./follow.route'))
 
+// topten
+router.use('/topten', requestAuthenticated, require('./topten.route'))
+// newsfeed
+router.use('/newsfeed', requestAuthenticated, require('./newsfeed.route'))
+
 // user
 router.use('/users', requestAuthenticated, require('./user.route'))
 

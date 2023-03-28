@@ -6,7 +6,6 @@ const commentController = {
   postComment: (req, res, next) => {
     const { text, objectiveId } = req.body
     const userId = req.user.id
-    console.log(req.user)
     commentServices.postComment(text, objectiveId, userId, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },
   deleteComment: (req, res, next) => {
