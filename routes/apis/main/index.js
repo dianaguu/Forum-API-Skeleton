@@ -30,6 +30,9 @@ router.post('/signup', accountController.signUp)
 router.post('/signin', accountAuthenticated, accountController.signIn)
 router.post('/signoff', requestAuthenticated, accountController.signOff)
 
+// analysis
+router.use('/analysis', requestAuthenticated, require('./analysis.route'))
+
 router.use('/', requestAuthenticated, (req, res) =>
   res.status(400).json({ status: 'error', message: `${req.originalUrl} not found, or wrong http method` })
 )
