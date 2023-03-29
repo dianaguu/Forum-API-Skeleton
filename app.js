@@ -9,6 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express')
 const handlebars = require('express-handlebars')
+const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const passport = require('./configs/passport')
 const flash = require('connect-flash')
@@ -31,6 +32,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 // method-override
 app.use(methodOverride('_method'))
+// parse cookie
+app.use(cookieParser())
 // ===========================================================
 // session and passport
 app.use(session({

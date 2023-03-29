@@ -18,7 +18,7 @@ const accountAuthenticated = (req, res, next) => {
 
 const requestAuthenticated = (req, res, next) => {
   const strategy = 'jwt'
-  const message = 'Unauthorized'
+  const message = 'Unauthorized account, or Token not found'
   passportAuthentication(req, res, next, strategy, message)
 }
 

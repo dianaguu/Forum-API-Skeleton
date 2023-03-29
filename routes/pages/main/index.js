@@ -33,7 +33,7 @@ router.get('/signin', accountController.signInPage)
 router.post('/signin',
   passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }),
   accountController.signIn)
-router.post('/signoff', accountController.signOff)
+router.post('/signoff', requestAuthenticated, accountController.signOff)
 
 // main root
 router.use('/', requestAuthenticated, (req, res) => res.redirect('/objectives'))
