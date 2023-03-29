@@ -5,37 +5,37 @@ const analysisServices = {
       switch (reqQueryKey) {
         case 'comments':
           data = {
-            count: Object.keys(reqAnalysisData.user.Comments).length,
-            comments: reqAnalysisData.user.Comments.map(comment => comment.text),
-            'comments detail': reqAnalysisData.user.Comments
+            count: Object.keys(reqAnalysisData.Comments).length,
+            comments: reqAnalysisData.Comments.map(comment => comment.text),
+            'comments detail': reqAnalysisData.Comments
           }
           break
         case 'commented-objectives':
           data = {
-            count: Object.keys(reqAnalysisData.user.CommentObjectives).length,
-            'objectives name': reqAnalysisData.user.CommentObjectives.map(objective => objective.name),
-            'commented objectives detail': reqAnalysisData.user.CommentObjectives
+            count: Object.keys(reqAnalysisData.CommentObjectives).length,
+            'objectives name': reqAnalysisData.CommentObjectives.map(objective => objective.name),
+            'commented objectives detail': reqAnalysisData.CommentObjectives
           }
           break
         case 'favorited-objectives':
           data = {
-            count: Object.keys(reqAnalysisData.user.FavoriteObjectives).length,
-            'objectives name': reqAnalysisData.user.FavoriteObjectives.map(objective => objective.name),
-            'favorited objectives detail': reqAnalysisData.user.FavoriteObjectives
+            count: Object.keys(reqAnalysisData.FavoriteObjectives).length,
+            'objectives name': reqAnalysisData.FavoriteObjectives.map(objective => objective.name),
+            'favorited objectives detail': reqAnalysisData.FavoriteObjectives
           }
           break
         case 'followers':
           data = {
-            count: Object.keys(reqAnalysisData.user.Followers).length,
-            'followers name': reqAnalysisData.user.Followers.map(follower => follower.name),
-            'followers detail': reqAnalysisData.user.Followers
+            count: Object.keys(reqAnalysisData.Followers).length,
+            'followers name': reqAnalysisData.Followers.map(follower => follower.name),
+            'followers detail': reqAnalysisData.Followers
           }
           break
         case 'followings':
           data = {
-            count: Object.keys(reqAnalysisData.user.Followings).length,
-            'followings name': reqAnalysisData.user.Followings.map(following => following.name),
-            'followings detail': reqAnalysisData.user.Followings
+            count: Object.keys(reqAnalysisData.Followings).length,
+            'followings name': reqAnalysisData.Followings.map(following => following.name),
+            'followings detail': reqAnalysisData.Followings
           }
           break
       }

@@ -19,7 +19,11 @@ const objectiveController = {
   getObjectiveWithComments: (req, res, next) => {
     const user = req.user
     const id = req.params.id
-    objectiveServices.getObjectiveWithComments(user, id, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    objectiveServices.getObjectiveWithComments(user, id, (err, data) => {
+      if (err) return next(err)
+      req.baseUrl === '/api/objectives' ? res.json({ status: 'success', data }) : req.analysisData = data.objective
+      next()
+    })
   },
   getDashboard: (req, res, next) => {
     objectiveServices.getDashboard(req, (err, data) => {
