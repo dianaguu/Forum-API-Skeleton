@@ -21,7 +21,8 @@ const objectiveController = {
     const id = req.params.id
     objectiveServices.getObjectiveWithComments(user, id, (err, data) => {
       if (err) return next(err)
-      req.baseUrl === '/api/objectives' ? res.json({ status: 'success', data }) : req.analysisData = data.objective
+      if (req.baseUrl.match('/api/v./objectives')) return res.json({ status: 'success', data })
+      req.analysisData = data.objective
       next()
     })
   },

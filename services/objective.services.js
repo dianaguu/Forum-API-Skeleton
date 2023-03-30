@@ -87,7 +87,7 @@ const ObjectiveServices = {
     ])
       .then(([objective, filePath]) => {
         if (objective) throw new Error(`${name} already exist!`)
-        Objective.create({
+        return Objective.create({
           name,
           telephone,
           address,
@@ -103,15 +103,13 @@ const ObjectiveServices = {
   putObjective: (req, callback) => {
     const { name, telephone, address, openingHours, description, categoryId } = req.body
     if (!name) throw new Error('Objective name is required!')
-
     Promise.all([
       Objective.findByPk(req.params.id),
       localFileHandler(req.file)
     ])
       .then(([objective, filePath]) => {
         if (!objective) throw new Error(`${name} does not exist!`)
-        // if (id !== objective.id) throw new Error(`id ${id} of req.body and id ${objective.id} queried form database are not match!`)
-        objective.update({
+        return objective.update({
           name,
           telephone,
           address,

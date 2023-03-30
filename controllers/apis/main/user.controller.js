@@ -8,7 +8,8 @@ const userController = {
     const reqParamsId = req.params.id
     userServices.getUser(reqUserId, reqParamsId, (err, data) => {
       if (err) return next(err)
-      req.baseUrl === '/api/users' ? res.json({ status: 'success', data }) : req.analysisData = data.user
+      if (req.baseUrl.match('/api/v./users')) return res.json({ status: 'success', data })
+      req.analysisData = data.user
       next()
     })
   },
