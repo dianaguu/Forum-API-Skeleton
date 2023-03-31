@@ -9,11 +9,16 @@ const accountController = {
   },
   signUp: (req, res, next) => {
     const { name, email, password, confirmPassword } = req.body
+    if (!name) throw new Error('name is required!')
+    if (!email) throw new Error('email is required!')
+    if (!password) throw new Error('password is required!')
+    if (!confirmPassword) throw new Error('confirmPassword is required!')
+
     accountServices.signUp(name, email, password, confirmPassword, (err, data) => {
       if (err) return next(err)
       req.flash('success_messages', 'Signed up successfully')
       req.session.signUpData = data
-      return res.redirect('/signin')
+      return res.redirect('/account/signin')
     })
   },
   signInPage: (req, res) => {
@@ -28,7 +33,7 @@ const accountController = {
       if (err) { return next(err) }
     })
     req.flash('success_messages', 'Signed off successfully')
-    res.redirect('/signin')
+    res.redirect('/account/signin')
   }
 }
 

@@ -13,6 +13,11 @@ const cookieOption = {
 const accountController = {
   signUp: (req, res, next) => {
     const { name, email, password, confirmPassword } = req.body
+    if (!name) throw new Error('name is required!')
+    if (!email) throw new Error('email is required!')
+    if (!password) throw new Error('password is required!')
+    if (!confirmPassword) throw new Error('confirmPassword is required!')
+
     accountServices.signUp(name, email, password, confirmPassword,
       (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },

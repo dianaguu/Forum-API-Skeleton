@@ -1,39 +1,22 @@
 const router = require('express').Router()
 
 /* eslint-disable */
-const passport = requireWrapper('configs/passport')
-const accountController = requireWrapper('controllers/pages/main/account.controller')
 const { requestAuthenticated } = requireWrapper('middlewares/pageAuthentication')
 /* eslint-enable */
 
-// objective
 router.use('/objectives', requestAuthenticated, require('./objective.route'))
-// comment
+
 router.use('/comments', requestAuthenticated, require('./comment.route'))
 
-// favorite
 router.use('/favorite', requestAuthenticated, require('./favorite.route'))
-// like
 router.use('/like', requestAuthenticated, require('./like.route'))
-// follow
 router.use('/follow', requestAuthenticated, require('./follow.route'))
 
-// topten
 router.use('/topten', requestAuthenticated, require('./topten.route'))
-// newsfeed
 router.use('/newsfeed', requestAuthenticated, require('./newsfeed.route'))
 
-// user
 router.use('/users', requestAuthenticated, require('./user.route'))
-
-// account
-router.get('/signup', accountController.signUpPage)
-router.post('/signup', accountController.signUp)
-router.get('/signin', accountController.signInPage)
-router.post('/signin',
-  passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }),
-  accountController.signIn)
-router.post('/signoff', requestAuthenticated, accountController.signOff)
+router.use('/account', require('./account.route'))
 
 // main root
 router.use('/', requestAuthenticated, (req, res) => res.redirect('/objectives'))
