@@ -18,11 +18,11 @@
           <p class="my-4 card-text" style="white-space: break-spaces;">{{this.description}}</p>
           <a href="/objectives/{{this.id}}"><button type="button" class="btn btn-primary">Show</button></a>
           {{#if isFavorite}}
-          <form action="/favorite/{{this.id}}/remove?_method=DELETE" method="POST" style="display: contents;">
+          <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
             <button type="submit" class="btn btn-primary m-1">Favorite</button>
           </form>
           {{else}}
-          <form action="/favorite/{{this.id}}/add" method="POST" style="display: contents;">
+          <form action="/favorite/{{this.id}}" method="POST" style="display: contents;">
             <button type="submit" class="btn btn-outline-muted m-1" style="color:gray;">Favorite</button>
           </form>
           {{/if}}

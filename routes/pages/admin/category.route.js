@@ -4,10 +4,10 @@ const router = require('express').Router()
 const categoryController = requireWrapper('controllers/pages/admin/category.controller')
 /* eslint-enable */
 
-router.post('/create', categoryController.postCategory)
-router.put('/:id/update', categoryController.putCategory)
 router.get('/:id/edit', categoryController.getCategories)
-router.delete('/:id/delete', categoryController.deleteCategory)
+router.put('/:id', categoryController.putCategory)
+router.delete('/:id', categoryController.deleteCategory)
+router.post('/', categoryController.postCategory)
 router.get('/', categoryController.getCategories)
 
 // admin/categories

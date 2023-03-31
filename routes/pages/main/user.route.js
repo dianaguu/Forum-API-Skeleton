@@ -5,7 +5,7 @@ const userController = requireWrapper('controllers/pages/main/user.controller')
 const upload = requireWrapper('middlewares/multer')
 /* eslint-enable */
 
-router.put('/:id/update', upload.single('image'), userController.putUser)
+router.put('/:id', upload.single('image'), userController.putUser)
 router.get('/:id/edit', userController.editUser)
 router.get('/:id', userController.getUser)
 

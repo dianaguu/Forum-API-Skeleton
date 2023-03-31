@@ -16,11 +16,11 @@
     <span class="bg-secondary badge">Followers：{{this.followerCount}}</span>
     <p>
     {{#if this.isFollow }}
-    <form action="/follow/{{this.id}}/remove?_method=DELETE" method="POST" style="display: contents;">
+    <form action="/follow/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
       <button type="submit" class="btn btn-danger">Unfollow</button>
     </form>
     {{else}}
-    <form action="/follow/{{this.id}}/add" method="POST" style="display: contents;">
+    <form action="/follow/{{this.id}}" method="POST" style="display: contents;">
       <button type="submit" class="btn btn-primary">Follow</button>
     </form>
     {{/if}}

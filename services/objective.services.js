@@ -73,7 +73,7 @@ const ObjectiveServices = {
       .then(objective => {
         const isFavorite = objective.FavoriteUsers.some(element => element.id === user.id)
         const isLike = objective.LikeUsers.some(element => element.id === user.id)
-        callback(null, { objective: objective.toJSON(), isFavorite, isLike })
+        callback(null, { objective: objective.toJSON(), user, isFavorite, isLike })
       })
       .catch(err => callback(err))
   },
@@ -147,25 +147,6 @@ const ObjectiveServices = {
         callback(null, { objective: objective.toJSON() })
       })
       .catch(err => callback(err))
-  },
-  getTopTen: async (reqUser, callback) => {
-    try {
-      const objectives = await Objective.findAll({
-        include: { model: User, as: 'FavoriteUsers' }
-      })
-      const preprocessedObjectives = await objectives.map((objective) => ({
-        ...objective.toJSON(),
-        description: objective.description.substring(0, 50),
-        favoriteCount: objective.FavoriteUsers.length,
-        isFavorite: reqUser?.FavoriteObjectives.map(favoriteObjectives =>
-          favoriteObjectives.id).includes(objective.id)
-      }))
-        .sort((a, b) => b.favoriteCount - a.favoriteCount)
-        .slice(0, 10)
-      callback(null, { objectives: preprocessedObjectives })
-    } catch (err) {
-      callback(err)
-    }
   }
 }
 

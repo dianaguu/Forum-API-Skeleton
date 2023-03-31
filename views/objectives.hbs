@@ -30,20 +30,20 @@
         <p class="card-text text-truncate">{{this.description}}</p>
         <div class="d-flex">
           {{#if isFavorite}}
-          <form action="/favorite/{{this.id}}/remove?_method=DELETE" method="POST" style="display: contents;">
+          <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
             <button type="submit" class="btn btn-primary m-1">Favorite</button>
           </form>
           {{else}}
-          <form action="/favorite/{{this.id}}/add" method="POST" style="display: contents;">
+          <form action="/favorite/{{this.id}}" method="POST" style="display: contents;">
             <button type="submit" class="btn btn-outline-muted m-1" style="color:gray;">Favorite</button>
           </form>
           {{/if}}
           {{#if isLike}}
-          <form action="/like/{{this.id}}/remove?_method=DELETE" method="POST" style="display: contents;">
+          <form action="/like/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
             <button type="submit" class="btn btn-primary m-1">Like</button>
           </form>
           {{else}}
-          <form action="/like/{{this.id}}/add" method="POST" style="display: contents;">
+          <form action="/like/{{this.id}}" method="POST" style="display: contents;">
             <button type="submit" class="btn btn-outline-muted m-1" style="color:gray;">Like</button>
           </form>
           {{/if}}
