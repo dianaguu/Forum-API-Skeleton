@@ -10,6 +10,6 @@ router.use('/categories', requestAuthenticatedAdmin, require('./category.route')
 router.use('/users', requestAuthenticatedAdmin, require('./user.route'))
 
 // admin root
-router.use('/', requestAuthenticatedAdmin, (req, res) => res.redirect('/admin/objectives'))
+router.use('/', requestAuthenticatedAdmin, (req, res) => res.redirect('/forum/admin/objectives'))
 
 module.exports = router

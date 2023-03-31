@@ -12,7 +12,7 @@ const categoryController = {
       if (err) return next(err)
       req.flash('success_messages', "User's privilege was successfully modified")
       req.session.updatedData = data
-      return res.redirect('/admin/users')
+      return res.redirect('/forum/admin/users')
     })
   }
 }

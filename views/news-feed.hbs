@@ -11,7 +11,7 @@
         {{#each objectives}}
         <div>
           <h4>
-            <a class="link-primary" href="/objectives/{{this.id}}">{{this.name}}</a>
+            <a class="link-primary" href="/forum/objectives/{{this.id}}">{{this.name}}</a>
             <small class="fs-6">[{{this.Category.name}}]</small>
           </h4>
           <p class="my-4" style="white-space: break-spaces;">{{this.description}}</p>
@@ -32,10 +32,10 @@
         {{#each comments}}
         <div>
           <h4>
-            <a class="link-primary" href="/objectives/{{this.Objective.id}}">{{this.Objective.name}}</a>
+            <a class="link-primary" href="/forum/objectives/{{this.Objective.id}}">{{this.Objective.name}}</a>
           </h4>
           <p class="my-4" style="white-space: break-spaces;">{{this.text}}</p>
-          - <a class="link-secondary" href="/users/{{this.User.id}}">{{this.User.name}}</a>
+          - <a class="link-secondary" href="/forum/users/{{this.User.id}}">{{this.User.name}}</a>
           <small>at {{relativeTimeFromNow this.createdAt}}</small>
           <hr>
         </div>

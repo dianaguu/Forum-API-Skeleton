@@ -20,7 +20,7 @@ const objectiveController = {
       if (err) return next(err)
       req.flash('success_messages', 'objective was successfully created')
       req.session.createdData = data
-      return res.redirect('/admin/objectives')
+      return res.redirect('/forum/admin/objectives')
     })
   },
   getObjective: (req, res, next) => {
@@ -42,14 +42,14 @@ const objectiveController = {
       if (err) return next(err)
       req.flash('success_messages', 'Objective was updated successfully')
       req.session.updatedData = data
-      return res.redirect('/admin/objectives')
+      return res.redirect('/forum/admin/objectives')
     })
   },
   deleteObjective: (req, res, next) => {
     objectiveServices.deleteObjective(req, (err, data) => {
       if (err) return next(err)
       req.session.deletedData = data
-      return res.redirect('/admin/objectives')
+      return res.redirect('/forum/admin/objectives')
     })
   }
 }

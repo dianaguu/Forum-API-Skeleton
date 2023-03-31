@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark px-4">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">Objectives Forum</a>
+      <a class="navbar-brand" href="/forum/">Objectives Forum</a>
       {{#if signInUser}}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,18 +11,19 @@
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           {{#if signInUser.isAdmin}}
           <li class="nav-item">
-            <a href="/admin" class="nav-link">Administrator</a>
+            <a href="/forum/admin" class="nav-link">Administrator</a>
           </li>
           {{/if}}
           <li class="nav-item d-inline-flex align-items-center">
             <span class="text-white nav-link">Hi, {{ signInUser.email }}</span>
           </li>
           <li class="nav-item">
-            {{!-- <a href="/users/{{ signInUser.id }}" class="nav-link text-white"> Profile </a> --}}
-            <button class="btn btn-outline-light my-sm-0 my-2 me-1" onclick="window.location.href='/users/{{ signInUser.id }}';">Profile</button>
+            {{!-- <a href="/forum/users/{{ signInUser.id }}" class="nav-link text-white"> Profile </a> --}}
+            <button class="btn btn-outline-light my-sm-0 my-2 me-1"
+              onclick="window.location.href='/forum/users/{{ signInUser.id }}';">Profile</button>
           </li>
           <li class="nav-item">
-            <form class="form-signoff" action="/account/signoff" method="POST">
+            <form class="form-signoff" action="/forum/account/signoff" method="POST">
               <button class="btn btn-outline-danger my-sm-0 my-2" type="submit">Sign Off</button>
             </form>
           </li>

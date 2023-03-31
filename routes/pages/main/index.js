@@ -19,6 +19,6 @@ router.use('/users', requestAuthenticated, require('./user.route'))
 router.use('/account', require('./account.route'))
 
 // main root
-router.use('/', requestAuthenticated, (req, res) => res.redirect('/objectives'))
+router.use('/', requestAuthenticated, (req, res) => res.redirect('/forum/objectives'))
 
 module.exports = router

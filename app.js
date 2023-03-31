@@ -60,7 +60,9 @@ app.use((req, res, next) => {
 // ===========================================================
 
 app.use('/api', apis)
-app.use(pages)
+app.use('/forum', pages)
+app.use('/', (req, res) => res.status(404).json({ status: 'error', message: 'Not found' }))
+
 app.listen(port, () => {
   console.info(`Forum app listening on port ${port}!`)
 })

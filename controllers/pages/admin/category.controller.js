@@ -14,7 +14,7 @@ const categoryController = {
       if (err) return next(err)
       req.flash('success_messages', 'Category was successfully created')
       req.session.createdData = data
-      return res.redirect('/admin/categories')
+      return res.redirect('/forum/admin/categories')
     })
   },
   putCategory: (req, res, next) => {
@@ -24,7 +24,7 @@ const categoryController = {
       if (err) return next(err)
       req.flash('success_messages', 'Category was successfully updated')
       req.session.updatedData = data
-      return res.redirect('/admin/categories')
+      return res.redirect('/forum/admin/categories')
     })
   },
   deleteCategory: (req, res, next) => {
@@ -32,7 +32,7 @@ const categoryController = {
     categoryServices.deleteCategory(id, (err, data) => {
       if (err) return next(err)
       req.session.deletedData = data
-      return res.redirect('/admin/categories')
+      return res.redirect('/forum/admin/categories')
     })
   }
 }

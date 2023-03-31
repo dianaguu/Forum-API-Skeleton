@@ -4,14 +4,14 @@ const requestAuthenticated = (req, res, next) => {
   if (authHelper.ensureAuthenticated(req)) {
     return next()
   }
-  res.redirect('/account/signin')
+  res.redirect('/forum/account/signin')
 }
 const requestAuthenticatedAdmin = (req, res, next) => {
   if (authHelper.ensureAuthenticated(req)) {
     if (authHelper.getUser(req).isAdmin) return next()
-    res.redirect('/')
+    res.redirect('/forum/')
   } else {
-    res.redirect('/account/signin')
+    res.redirect('/forum/account/signin')
   }
 }
 module.exports = {

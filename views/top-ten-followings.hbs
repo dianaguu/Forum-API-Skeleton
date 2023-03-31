@@ -4,7 +4,7 @@
 <div class="row" style="text-align: center;">
   {{#each users}}
   <div class="col-3">
-    <a href="/users/{{this.id}}">
+    <a href="/forum/users/{{this.id}}">
       {{#if this.image}}
       <img src="{{this.image}}" width="140px" height="140px" style="transition: opacity 0.5s; opacity:0;"
         onload="this.style.opacity=1;" />
@@ -15,12 +15,12 @@
     <h2>{{this.name}}</h2>
     <span class="bg-secondary badge">Followers：{{this.followerCount}}</span>
     <p>
-    {{#if this.isFollow }}
-    <form action="/follow/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
+      {{#if this.isFollow }}
+    <form action="/forum/follow/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
       <button type="submit" class="btn btn-danger">Unfollow</button>
     </form>
     {{else}}
-    <form action="/follow/{{this.id}}" method="POST" style="display: contents;">
+    <form action="/forum/follow/{{this.id}}" method="POST" style="display: contents;">
       <button type="submit" class="btn btn-primary">Follow</button>
     </form>
     {{/if}}

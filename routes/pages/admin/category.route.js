@@ -11,6 +11,6 @@ router.post('/', categoryController.postCategory)
 router.get('/', categoryController.getCategories)
 
 // admin/categories
-router.use('/', (req, res) => res.redirect('/admin/categories'))
+router.use('/', (req, res) => res.redirect('/forum/admin/categories'))
 
 module.exports = router

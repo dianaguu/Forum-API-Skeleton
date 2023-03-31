@@ -18,22 +18,22 @@
   <div class="col-md-8">
     <p style="white-space: break-spaces;">{{objective.description}}</p>
     <div class="d-flex">
-      <a class="btn btn-primary m-1" href="/objectives/{{objective.id}}/dashboard">Dashboard</a>
+      <a class="btn btn-primary m-1" href="/forum/objectives/{{objective.id}}/dashboard">Dashboard</a>
       {{#if isFavorite}}
-      <form action="/favorite/{{objective.id}}?_method=DELETE" method="POST" style="display: contents;">
+      <form action="/forum/favorite/{{objective.id}}?_method=DELETE" method="POST" style="display: contents;">
         <button type="submit" class="btn btn-primary m-1">Favorite</button>
       </form>
       {{else}}
-      <form action="/favorite/{{objective.id}}" method="POST" style="display: contents;">
+      <form action="/forum/favorite/{{objective.id}}" method="POST" style="display: contents;">
         <button type="submit" class="btn btn-outline-muted m-1" style="color:gray;">Favorite</button>
       </form>
       {{/if}}
       {{#if isLike}}
-      <form action="/like/{{objective.id}}?_method=DELETE" method="POST" style="display: contents;">
+      <form action="/forum/like/{{objective.id}}?_method=DELETE" method="POST" style="display: contents;">
         <button type="submit" class="btn btn-primary m-1">Like</button>
       </form>
       {{else}}
-      <form action="/like/{{objective.id}}" method="POST" style="display: contents;">
+      <form action="/forum/like/{{objective.id}}" method="POST" style="display: contents;">
         <button type="submit" class="btn btn-outline-muted m-1" style="color:gray;">Like</button>
       </form>
       {{/if}}
@@ -45,26 +45,26 @@
 {{!-- display all comments --}}
 <h4 class="mb-2" style="font-weight: bold">All Comments：</h4>
 {{#ifCond objective.Comments.length 0}}
-  <p>- no comment -</p>
+<p>- no comment -</p>
 {{else}}
-  {{#each objective.Comments}}
-    {{#if ../user.isAdmin}}
-    <form action="/comments/{{this.id}}?_method=DELETE" method="POST" class="float-end">
-      <button type="submit" class="btn btn-danger"
-        onclick="return confirm(`Are you sure you want to delete the comment ?`)">Delete</button>
-    </form>
-    {{/if}}
-    <blockquote class="blockquote mb-0">
-      <h5><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h5>
-      <p>{{this.text}}</p>
-      <footer class="blockquote-footer">{{relativeTimeFromNow this.createdAt}}</footer>
-    </blockquote>
-    <hr />
-  {{/each}}
+{{#each objective.Comments}}
+{{#if ../user.isAdmin}}
+<form action="/forum/comments/{{this.id}}?_method=DELETE" method="POST" class="float-end">
+  <button type="submit" class="btn btn-danger"
+    onclick="return confirm(`Are you sure you want to delete the comment ?`)">Delete</button>
+</form>
+{{/if}}
+<blockquote class="blockquote mb-0">
+  <h5><a href="/forum/users/{{this.User.id}}">{{this.User.name}}</a></h5>
+  <p>{{this.text}}</p>
+  <footer class="blockquote-footer">{{relativeTimeFromNow this.createdAt}}</footer>
+</blockquote>
+<hr />
+{{/each}}
 {{/ifCond}}
 
 {{!-- comment --}}
-<form action="/comments" method="POST">
+<form action="/forum/comments" method="POST">
   <div class="form-row mb-3">
     <label class="form-label" for="text" style="font-size: 24px; font-weight: bold">Comment：</label>
     <textarea class="form-control" id="text" name="text" rows="3"></textarea>

@@ -24,11 +24,11 @@
       </td>
       <td>
         {{#if this.isAdmin}}
-        <form action="/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
+        <form action="/forum/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link link-danger">Set as User</button>
         </form>
         {{else}}
-        <form action="/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
+        <form action="/forum/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link link-danger">Set as Admin</button>
         </form>
         {{/if}}

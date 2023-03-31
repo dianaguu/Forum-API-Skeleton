@@ -18,7 +18,7 @@ const accountController = {
       if (err) return next(err)
       req.flash('success_messages', 'Signed up successfully')
       req.session.signUpData = data
-      return res.redirect('/account/signin')
+      return res.redirect('/forum/account/signin')
     })
   },
   signInPage: (req, res) => {
@@ -33,7 +33,7 @@ const accountController = {
       if (err) { return next(err) }
     })
     req.flash('success_messages', 'Signed off successfully')
-    res.redirect('/account/signin')
+    res.redirect('/forum/account/signin')
   }
 }
 

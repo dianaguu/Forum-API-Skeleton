@@ -8,6 +8,6 @@ router.patch('/:id', userController.patchUser)
 router.get('/', userController.getUsers)
 
 // admin/categories
-router.use('/', (req, res) => res.redirect('/admin/users'))
+router.use('/', (req, res) => res.redirect('/forum/admin/users'))
 
 module.exports = router

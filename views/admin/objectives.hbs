@@ -21,16 +21,16 @@
       <td>{{this.Category.name}}</td>
       <td>
         <button type="button" class="btn btn-link">
-          <a class="btn btn-link link-primary" href="/admin/objectives/{{this.id}}">
+          <a class="btn btn-link link-primary" href="/forum/admin/objectives/{{this.id}}">
             Show
           </a>
         </button>
         <button type="button" class="btn btn-link">
-          <a class="btn btn-link link-primary" href="/admin/objectives/{{this.id}}/edit">
+          <a class="btn btn-link link-primary" href="/forum/admin/objectives/{{this.id}}/edit">
             Edit
           </a>
         </button>
-        <form action="/admin/objectives/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+        <form action="/forum/admin/objectives/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link link-danger"
             onclick="return confirm(`Are you sure you want to delete * {{ this.name }} * ?`)">Delete</button>
         </form>
