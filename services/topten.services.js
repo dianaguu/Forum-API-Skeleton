@@ -23,20 +23,21 @@ const topTenServices = {
       callback(err)
     }
   },
-  getFollowings: async (callback) => {
+  getFollowings: async (reqUserId, callback) => {
     try {
-      const users = await User.findAll({
-        include: [
-          { model: User, as: 'Followers' },
-          { model: User, as: 'Followings' }]
-      })
-      const sortedUser = users.map(user => ({
+      const [users, user] = await Promise.all([
+        User.findAll({ include: { model: User, as: 'Followers' } }),
+        User.findByPk(reqUserId, { include: { model: User, as: 'Followings' } })
+      ])
+
+      const signInUser = user.toJSON()
+      const sortedUser = users?.map(user => ({
         ...user.toJSON(),
         followerCount: user.Followers.length,
-        isFollow: user.Followings.some(following => following.id === user.id)
-
+        isFollow: signInUser.Followings.some(following => following.id === user.id)
       }))
         .sort((a, b) => b.followerCount - a.followerCount)
+        .slice(0, 10)
       callback(null, { users: sortedUser })
     } catch (err) {
       callback(err)

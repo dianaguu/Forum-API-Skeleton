@@ -8,7 +8,8 @@ const topTenController = {
     toptenServices.getObjectives(reqUserId, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },
   getFollowings: (req, res, next) => {
-    toptenServices.getFollowings((err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    const reqUserId = req.user.id
+    toptenServices.getFollowings(reqUserId, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 

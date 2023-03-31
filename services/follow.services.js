@@ -3,23 +3,6 @@ const { Followship, User } = requireWrapper('models')
 /* eslint-enable */
 
 const favoriteServices = {
-  getTopTen: async (userFollowings, callback) => {
-    try {
-      const users = await User.findAll({
-        include: { model: User, as: 'Followers' }
-      })
-      const sortedUser = users.map(user => ({
-        ...user.toJSON(),
-        followerCount: user.Followers.length,
-        isFollow: userFollowings.some(following => following.id === user.id)
-
-      }))
-        .sort((a, b) => b.followerCount - a.followerCount)
-      callback(null, { users: sortedUser })
-    } catch (err) {
-      callback(err)
-    }
-  },
   addFollow: async (reqUserId, reqParamsId, callback) => {
     try {
       const [user, followship] = await Promise.all([
@@ -38,7 +21,7 @@ const favoriteServices = {
         followerId: reqUserId,
         followingId: reqParamsId
       })
-      callback(null, { followship: addedFollow })
+      callback(null, { followship: addedFollow, user })
     } catch (err) {
       callback(err)
     }
