@@ -15,6 +15,24 @@ const userController = {
       })
     })
   },
+  getAdminUsers: (req, res, next) => {
+    userServices.getUsers((err, data) => {
+      if (err) return next(err)
+      const adminUsers = data.users.reduce((adminList, currentUser) => {
+        if (currentUser.isAdmin === Number(req.query.isAdmin)) {
+          adminList.push(currentUser)
+        }
+        return adminList
+      }, [])
+      return res.json({
+        status: 'success',
+        data: {
+          count: Object.keys(adminUsers).length,
+          users: adminUsers
+        }
+      })
+    })
+  },
   getUser: (req, res, next) => {
     const reqUserId = req.user.id
     const reqParamsId = req.params.id
