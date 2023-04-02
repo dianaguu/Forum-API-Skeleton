@@ -2,7 +2,7 @@
 const { Objective, Category, Comment, User } = requireWrapper('models')
 /* eslint-enable */
 
-const newsFeedServices = {
+const feedServices = {
   getObjectivesAndComments: async (callback) => {
     try {
       const [objectives, comments] = await Promise.all([
@@ -28,4 +28,4 @@ const newsFeedServices = {
   }
 }
 
-module.exports = newsFeedServices
+module.exports = feedServices

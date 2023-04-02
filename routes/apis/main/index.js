@@ -13,7 +13,7 @@ router.use('/like', requestAuthenticated, require('./like.route'))
 router.use('/follow', requestAuthenticated, require('./follow.route'))
 
 router.use('/topten', requestAuthenticated, require('./topten.route'))
-router.use('/newsfeed', requestAuthenticated, require('./newsfeed.route'))
+router.use('/feed', requestAuthenticated, require('./feed.route'))
 
 router.use('/users', requestAuthenticated, require('./user.route'))
 router.use('/account', require('./account.route'))
