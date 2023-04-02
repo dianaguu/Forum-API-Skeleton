@@ -3,28 +3,28 @@ const { Objective, Category, Comment, User } = requireWrapper('models')
 /* eslint-enable */
 
 const feedServices = {
-  getObjectivesAndComments: async (callback) => {
-    try {
-      const [objectives, comments] = await Promise.all([
-        Objective.findAll({
-          limit: 10,
-          order: [['createdAt', 'DESC']],
-          include: [Category],
-          raw: true,
-          nest: true
-        }),
-        Comment.findAll({
-          limit: 10,
-          order: [['createdAt', 'DESC']],
-          include: [User, Objective],
-          raw: true,
-          nest: true
-        })
-      ])
-      callback(null, { objectives, comments })
-    } catch (err) {
-      callback(err)
-    }
+  getObjectives: (recordsLimit, callback) => {
+    Objective.findAll({
+      limit: Number(recordsLimit),
+      order: [['createdAt', 'DESC']],
+      include: [{ model: Category, attributes: ['id', 'name'] }],
+      raw: true,
+      nest: true
+    })
+      .then(objectives => callback(null, { objectives }))
+      .catch(err => callback(err))
+  },
+  getComments: async (recordsLimit, callback) => {
+    Comment.findAll({
+      limit: Number(recordsLimit),
+      order: [['createdAt', 'DESC']],
+      include: [{ model: User, attributes: ['id', 'name'] },
+        { model: Objective, attributes: ['id', 'name'] }],
+      raw: true,
+      nest: true
+    })
+      .then(comments => callback(null, { comments }))
+      .catch(err => callback(err))
   }
 }
 

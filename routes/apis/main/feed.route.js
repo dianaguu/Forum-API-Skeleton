@@ -4,6 +4,7 @@ const router = require('express').Router()
 const feedController = requireWrapper('controllers/apis/main/feed.controller')
 /* eslint-enable */
 
-router.get('/objectives&comments', feedController.getObjectivesAndComments)
+router.get('/objectives', feedController.getObjectives)
+router.get('/comments', feedController.getComments)
 
 module.exports = router
