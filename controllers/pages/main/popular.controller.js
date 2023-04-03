@@ -3,14 +3,16 @@
 const popularServices = requireWrapper('services/popular.services')
 /* eslint-enable */
 
+const MN_RECORDS_LIMIT = 10
+
 const popularController = {
   getObjectives: (req, res, next) => {
-    const reqUserId = req.user.id
-    popularServices.getObjectives(reqUserId, (err, data) => err ? next(err) : res.render('popular-objectives', data))
+    popularServices.getObjectives(req.user.id, MN_RECORDS_LIMIT, (err, data) =>
+      err ? next(err) : res.render('popular-objectives', data))
   },
   getFollowings: (req, res, next) => {
-    const reqUserId = req.user.id
-    popularServices.getFollowings(reqUserId, (err, data) => err ? next(err) : res.render('popular-followings', data))
+    popularServices.getFollowings(req.user.id, MN_RECORDS_LIMIT, (err, data) =>
+      err ? next(err) : res.render('popular-followings', data))
   }
 }
 
