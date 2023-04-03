@@ -12,7 +12,7 @@ router.use('/favorite', requestAuthenticated, require('./favorite.route'))
 router.use('/like', requestAuthenticated, require('./like.route'))
 router.use('/follow', requestAuthenticated, require('./follow.route'))
 
-router.use('/topten', requestAuthenticated, require('./topten.route'))
+router.use('/popular', requestAuthenticated, require('./popular.route'))
 router.use('/feed', requestAuthenticated, require('./feed.route'))
 
 router.use('/users', requestAuthenticated, require('./user.route'))

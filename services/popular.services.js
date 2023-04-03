@@ -2,7 +2,7 @@
 const { Objective, Category, Comment, User } = requireWrapper('models')
 /* eslint-enable */
 
-const topTenServices = {
+const popularServices = {
   getObjectives: async (reqUserId, callback) => {
     try {
       const [objectives, user] = await Promise.all([
@@ -45,4 +45,4 @@ const topTenServices = {
   }
 }
 
-module.exports = topTenServices
+module.exports = popularServices
