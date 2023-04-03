@@ -9,7 +9,7 @@ const commentController = {
     commentServices.postComment(text, objectiveId, userId, (err, data) => {
       if (err) return next(err)
       req.session.createdData = data
-      return res.redirect(`/objectives/${objectiveId}`)
+      return res.redirect(`/forum/objectives/${objectiveId}`)
     })
   },
   deleteComment: (req, res, next) => {
@@ -18,7 +18,7 @@ const commentController = {
     commentServices.deleteComment(commentId, userIsAdmin, (err, data) => {
       if (err) return next(err)
       req.session.deletedData = data
-      return res.redirect(`/objectives/${data.comment.objectiveId}`)
+      return res.redirect(`/forum/objectives/${data.comment.objectiveId}`)
     })
   }
 }

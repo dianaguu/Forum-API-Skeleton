@@ -4,29 +4,54 @@ const objectiveServices = requireWrapper('services/objective.services')
 /* eslint-enable */
 
 const objectiveController = {
-  getObjectives: (req, res, next) => {
-    const categoryId = ''
-    objectiveServices.getObjectives(categoryId, (err, data) => err ? next(err) : res.render('admin/objectives', data))
+  postObjective: (req, res, next) => {
+    objectiveServices.postObjective(
+      req.file,
+      req.body.name,
+      req.body.telephone,
+      req.body.address,
+      req.body.openingHours,
+      req.body.description,
+      req.body.categoryId,
+      (err, data) => {
+        if (err) return next(err)
+        req.flash('success_messages', 'objective was successfully created')
+        req.session.createdData = data
+        return res.redirect('/forum/admin/objectives')
+      })
   },
-  createObjective: (req, res, next) => {
+  createFormObjective: (req, res, next) => {
     return Category.findAll({
       raw: true
     })
       .then(categories => res.render('admin/objective-create-form', { categories }))
       .catch(err => next(err))
   },
-  postObjective: (req, res, next) => {
-    objectiveServices.postObjective(req, (err, data) => {
-      if (err) return next(err)
-      req.flash('success_messages', 'objective was successfully created')
-      req.session.createdData = data
-      return res.redirect('/forum/admin/objectives')
-    })
+  getObjectives: (req, res, next) => {
+    const categoryId = ''
+    objectiveServices.getObjectives(categoryId, (err, data) => err ? next(err) : res.render('admin/objectives', data))
   },
   getObjective: (req, res, next) => {
-    objectiveServices.getObjective(req, (err, data) => err ? next(err) : res.render('admin/objective', data))
+    objectiveServices.getObjective(req.params.id, (err, data) => err ? next(err) : res.render('admin/objective', data))
   },
-  editObjective: (req, res, next) => {
+  putObjective: (req, res, next) => {
+    objectiveServices.putObjective(
+      req.params.id,
+      req.file,
+      req.body.name,
+      req.body.telephone,
+      req.body.address,
+      req.body.openingHours,
+      req.body.description,
+      req.body.categoryId,
+      (err, data) => {
+        if (err) return next(err)
+        req.flash('success_messages', 'Objective was updated successfully')
+        req.session.updatedData = data
+        return res.redirect('/forum/admin/objectives')
+      })
+  },
+  editFormObjective: (req, res, next) => {
     return Promise.all([
       Objective.findByPk(req.params.id, { raw: true }),
       Category.findAll({ raw: true })
@@ -37,16 +62,8 @@ const objectiveController = {
       })
       .catch(err => next(err))
   },
-  putObjective: (req, res, next) => {
-    objectiveServices.putObjective(req, (err, data) => {
-      if (err) return next(err)
-      req.flash('success_messages', 'Objective was updated successfully')
-      req.session.updatedData = data
-      return res.redirect('/forum/admin/objectives')
-    })
-  },
   deleteObjective: (req, res, next) => {
-    objectiveServices.deleteObjective(req, (err, data) => {
+    objectiveServices.deleteObjective(req.params.id, (err, data) => {
       if (err) return next(err)
       req.session.deletedData = data
       return res.redirect('/forum/admin/objectives')

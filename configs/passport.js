@@ -36,7 +36,13 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET
 }
 passport.use(new JwtStrategy(jwtOptions, (jwtPayload, cb) => {
-  User.findByPk(jwtPayload.id)
+  User.findByPk(jwtPayload.id, {
+    include: [
+      { model: Objective, as: 'FavoriteObjectives' },
+      { model: Objective, as: 'LikeObjectives' },
+      { model: User, as: 'Followers' },
+      { model: User, as: 'Followings' }]
+  })
     .then(user => cb(null, user))
     .catch(err => cb(err))
 }))
@@ -47,6 +53,7 @@ passport.serializeUser((user, done) => {
 })
 passport.deserializeUser((id, done) => {
   return User.findByPk(id, {
+    attributes: { exclude: ['password'] },
     include: [
       { model: Objective, as: 'FavoriteObjectives' },
       { model: Objective, as: 'LikeObjectives' },

@@ -7,6 +7,6 @@ const objectiveController = requireWrapper('controllers/apis/main/objective.cont
 /* eslint-enable */
 
 router.get('/user/:id', userController.getUser, analysisController.preprocess)
-router.get('/objective/:id', objectiveController.getObjectiveWithComments, analysisController.preprocess)
+router.get('/objective/:id', objectiveController.getObjectiveWithDetail, analysisController.preprocess)
 
 module.exports = router

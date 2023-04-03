@@ -5,7 +5,7 @@ const objectiveController = requireWrapper('controllers/apis/main/objective.cont
 /* eslint-enable */
 
 router.get('/:id/dashboard', objectiveController.getDashboard)
-router.get('/:id', objectiveController.getObjectiveWithComments)
-router.get('/', objectiveController.getObjectives)
+router.get('/:id', objectiveController.getObjectiveWithDetail)
+router.get('/', objectiveController.getObjectivesWithPagination)
 
 module.exports = router

@@ -4,37 +4,90 @@ const { localFileHandler } = requireWrapper('helpers/file.helper')
 const { getOffset, getPagination } = requireWrapper('helpers/pagination.helper')
 /* eslint-enable */
 
+const attributes = ['id', 'name']
+
 const ObjectiveServices = {
-  getObjectives: (categoryId, callback) => {
-    Objective.findAll({
-      raw: true,
-      nest: true,
-      include: [Category],
-      where: { ...categoryId ? { categoryId } : {} }
-    })
-      .then(objectives => callback(null, { objectives }))
-      .catch(err => callback(err))
-  },
-  getObjectivesWithPagination: async (user, categoryId, page, limit, callback) => {
+  postObjective: async (
+    reqFile,
+    name,
+    telephone,
+    address,
+    openingHours,
+    description,
+    categoryId,
+    callback
+  ) => {
     try {
-      const offset = getOffset(limit, page)
-      const [objectives, categories] = await Promise.all([
-        Objective.findAndCountAll({
-          raw: true,
-          nest: true,
-          include: [Category],
-          where: { ...categoryId ? { categoryId } : {} },
+      if (!name) throw new Error('Objective name is required!')
+
+      const [objective, filePath] = await Promise.all([
+        Objective.findOne({ where: { name } }),
+        localFileHandler(reqFile)
+      ])
+      if (objective) throw new Error(`${name} already exist!`)
+
+      const createdObjective = await Objective.create({
+        name,
+        telephone,
+        address,
+        openingHours,
+        description,
+        image: filePath || null,
+        categoryId
+      })
+      callback(null, { objective: createdObjective })
+    } catch (err) {
+      callback(err)
+    }
+  },
+  getObjectives: async (categoryId, callback) => {
+    try {
+      const objectives = await Objective.findAll({
+        include: [{ model: Category, attributes }],
+        where: { ...categoryId ? { categoryId } : {} },
+        raw: true,
+        nest: true
+      })
+      callback(null, { objectives })
+    } catch (err) {
+      callback(err)
+    }
+  },
+  getObjectivesWithPagination: async (
+    user,
+    categoryId,
+    page, limit,
+    callback
+  ) => {
+    try {
+      const MN_MAX_CHARACTERS = 50
+
+      // for API: lift restrictions that default limit is 9 as PAGES
+      let offset = 0
+      let limitAndOffset = {}
+      if (limit) {
+        offset = getOffset(limit, page)
+        limitAndOffset = {
           limit,
           offset
+        }
+      }
+
+      const [objectives, categories] = await Promise.all([
+        Objective.findAndCountAll({
+          include: [{ model: Category, attributes }],
+          where: { ...categoryId ? { categoryId } : {} },
+          ...limitAndOffset,
+          raw: true,
+          nest: true
         }),
         Category.findAll({ raw: true })
       ])
-
-      const favoriteObjectivesId = user && user.FavoriteObjectives.map(element => element.id)
-      const likeObjectivesId = user && user.LikeObjectives.map(element => element.id)
+      const favoriteObjectivesId = user?.FavoriteObjectives.map(element => element.id)
+      const likeObjectivesId = user?.LikeObjectives.map(element => element.id)
       const shortDescriptionObjectives = await objectives.rows.map((element) => ({
         ...element,
-        description: element.description.substring(0, 50),
+        description: element.description.substring(0, MN_MAX_CHARACTERS),
         isFavorite: favoriteObjectivesId.includes(element.id),
         isLike: likeObjectivesId.includes(element.id)
       }))
@@ -42,111 +95,105 @@ const ObjectiveServices = {
         objectives: shortDescriptionObjectives,
         categories,
         categoryId,
-        pagination: getPagination(limit, page, objectives.count)
+        pagination: limit > 0 ? getPagination(limit, page, objectives.count) : {}
       })
     } catch (err) {
       callback(err)
     }
   },
-  getObjective: (req, callback) => {
-    Objective.findByPk(req.params.id, {
-      include: [Category]
-    })
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        return objective.increment('views')
+  getObjective: async (reqParamsId, callback) => {
+    try {
+      const objective = await Objective.findByPk(reqParamsId, {
+        include: [{ model: Category, attributes }],
+        raw: true,
+        nest: true
       })
-      .then(objective => callback(null, { objective: objective.toJSON() }))
-      .catch(err => callback(err))
+      if (!objective) throw new Error("Objective didn't exist!")
+      callback(null, { objective })
+    } catch (err) {
+      callback(err)
+    }
   },
-  getObjectiveWithComments: (user, id, callback) => {
-    Objective.findByPk(id, {
-      include: [Category,
-        { model: Comment, include: User },
-        { model: User, as: 'FavoriteUsers' },
-        { model: User, as: 'LikeUsers' }]
-    })
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        return objective.increment('views')
+  getObjectiveWithDetail: async (user, reqParamsId, callback) => {
+    try {
+      const objective = await Objective.findByPk(reqParamsId, {
+        include: [
+          { model: Category, attributes },
+          { model: Comment, attributes: { exclude: ['objectiveId', 'userId'] }, include: { model: User, attributes } }]
       })
-      .then(objective => {
-        const isFavorite = objective.FavoriteUsers.some(element => element.id === user.id)
-        const isLike = objective.LikeUsers.some(element => element.id === user.id)
-        callback(null, { objective: objective.toJSON(), user, isFavorite, isLike })
-      })
-      .catch(err => callback(err))
-  },
-  postObjective: (req, callback) => {
-    const { name, telephone, address, openingHours, description, categoryId } = req.body
-    if (!name) throw new Error('Objective name is required!')
+      if (!objective) throw new Error("Objective didn't exist!")
 
-    Promise.all([
-      Objective.findOne({ where: { name } }),
-      localFileHandler(req.file)
-    ])
-      .then(([objective, filePath]) => {
-        if (objective) throw new Error(`${name} already exist!`)
-        return Objective.create({
-          name,
-          telephone,
-          address,
-          openingHours,
-          description,
-          image: filePath || null,
-          categoryId
-        })
-      })
-      .then(createdObjective => callback(null, { objective: createdObjective }))
-      .catch(err => callback(err))
+      await objective.increment('views')
+      const isFavorite = user?.FavoriteObjectives.some(element => element.id === objective.id)
+      const isLike = user?.LikeObjectives.some(element => element.id === objective.id)
+      callback(null, { objective: objective.toJSON(), user, isFavorite, isLike })
+    } catch (err) {
+      callback(err)
+    }
   },
-  putObjective: (req, callback) => {
-    const { name, telephone, address, openingHours, description, categoryId } = req.body
-    if (!name) throw new Error('Objective name is required!')
-    Promise.all([
-      Objective.findByPk(req.params.id),
-      localFileHandler(req.file)
-    ])
-      .then(([objective, filePath]) => {
-        if (!objective) throw new Error(`${name} does not exist!`)
-        return objective.update({
-          name,
-          telephone,
-          address,
-          openingHours,
-          description,
-          image: filePath || null,
-          categoryId
-        })
+  putObjective: async (
+    reqParamsId,
+    reqFile,
+    name,
+    telephone,
+    address,
+    openingHours,
+    description,
+    categoryId,
+    callback
+  ) => {
+    try {
+      if (!name) throw new Error('Objective name is required!')
+
+      const [objective, filePath] = await Promise.all([
+        Objective.findByPk(reqParamsId),
+        localFileHandler(reqFile)
+      ])
+      if (!objective) throw new Error(`${name} does not exist!`)
+
+      const updatedObjective = await objective.update({
+        name,
+        telephone,
+        address,
+        openingHours,
+        description,
+        image: filePath || objective.image,
+        categoryId
       })
-      .then(updatedObjective => callback(null, { objective: updatedObjective }))
-      .catch(err => callback(err))
+      callback(null, { objective: updatedObjective })
+    } catch (err) {
+      callback(err)
+    }
   },
-  deleteObjective: (req, callback) => {
-    return Objective.findByPk(req.params.id)
-      .then(objective => {
-        if (!objective) {
-          const err = new Error("Objective didn't exist!")
-          err.status = 404
-          throw err
-        }
-        return objective.destroy()
-      })
-      .then(deletedObjective => callback(null, { objective: deletedObjective }))
-      .catch(err => callback(err))
+  deleteObjective: async (reqParamsId, callback) => {
+    try {
+      const objective = await Objective.findByPk(reqParamsId)
+      if (!objective) {
+        const err = new Error("Objective didn't exist!")
+        err.status = 404
+        throw err
+      }
+      const deletedObjective = await objective.destroy()
+      callback(null, { objective: deletedObjective })
+    } catch (err) {
+      callback(err)
+    }
   },
-  getDashboard: (req, callback) => {
-    return Objective.findByPk(req.params.id, {
-      include: [Category,
-        { model: Comment, include: User },
-        { model: User, as: 'FavoriteUsers' },
-        { model: User, as: 'LikeUsers' }]
-    })
-      .then(objective => {
-        if (!objective) throw new Error("Objective didn't exist!")
-        callback(null, { objective: objective.toJSON() })
+  getDashboard: async (reqParamsId, callback) => {
+    try {
+      const objective = await Objective.findByPk(reqParamsId, {
+        attributes: ['id', 'name', 'views'],
+        include: [
+          { model: Category, attributes },
+          { model: Comment, attributes: ['id'], include: { model: User, attributes } },
+          { model: User, attributes, as: 'FavoriteUsers' },
+          { model: User, attributes, as: 'LikeUsers' }]
       })
-      .catch(err => callback(err))
+      if (!objective) throw new Error("Objective didn't exist!")
+      callback(null, { objective: objective.toJSON() })
+    } catch (err) {
+      callback(err)
+    }
   }
 }
 

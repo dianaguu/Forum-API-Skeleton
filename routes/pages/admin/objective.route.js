@@ -5,8 +5,8 @@ const objectiveController = requireWrapper('controllers/pages/admin/objective.co
 const upload = requireWrapper('middlewares/multer')
 /* eslint-enable */
 
-router.get('/create', objectiveController.createObjective)
-router.get('/:id/edit', objectiveController.editObjective)
+router.get('/create', objectiveController.createFormObjective)
+router.get('/:id/edit', objectiveController.editFormObjective)
 router.put('/:id', upload.single('image'), objectiveController.putObjective)
 router.delete('/:id', objectiveController.deleteObjective)
 router.get('/:id', objectiveController.getObjective)
