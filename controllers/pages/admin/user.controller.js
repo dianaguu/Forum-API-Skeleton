@@ -7,9 +7,9 @@ const categoryController = {
     userServices.getUsers((err, data) => err ? next(err) : res.render('admin/users', data))
   },
   patchUser: (req, res, next) => {
-    const reqParamsId = req.params.id
-    userServices.patchUser(reqParamsId, (err, data) => {
+    userServices.patchUser(req.params.id, (err, data) => {
       if (err) return next(err)
+      delete data.user.password
       req.flash('success_messages', "User's privilege was successfully modified")
       req.session.updatedData = data
       return res.redirect('/forum/admin/users')

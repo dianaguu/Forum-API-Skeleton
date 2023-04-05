@@ -5,9 +5,20 @@ const userServices = requireWrapper('services/user.services')
 
 const userController = {
   getUser: (req, res, next) => {
-    const reqUserId = req.user.id
-    const reqParamsId = req.params.id
-    userServices.getUser(reqUserId, reqParamsId, (err, data) => err ? next(err) : res.render('users/profile', data))
+    userServices.getUser(req.user.id, req.params.id, (err, data) => err ? next(err) : res.render('users/profile', data))
+  },
+  putUser: (req, res, next) => {
+    userServices.putUser(
+      req.user.id,
+      req.params.id,
+      req.body.name,
+      req.file,
+      (err, data) => {
+        if (err) return next(err)
+        delete data.user.password
+        req.session.updatedData = data
+        res.redirect(`/forum/users/${req.params.id}`)
+      })
   },
   editUser: (req, res, next) => {
     return User.findByPk(req.params.id)
@@ -16,14 +27,6 @@ const userController = {
         res.render('users/user-edit-form', { user: user.toJSON() })
       })
       .catch(err => next(err))
-  },
-  putUser: (req, res, next) => {
-    const reqUserId = req.user.id
-    const reqParamsId = req.params.id
-    const reqBodyName = req.body.name
-    const reqFile = req.file
-    userServices.putUser(reqUserId, reqParamsId, reqBodyName, reqFile, (err, data) =>
-      err ? next(err) : res.redirect(`/users/${reqParamsId}`))
   }
 }
 

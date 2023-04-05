@@ -4,9 +4,7 @@ const userServices = requireWrapper('services/user.services')
 
 const userController = {
   getUser: (req, res, next) => {
-    const reqUserId = req.user.id
-    const reqParamsId = req.params.id
-    userServices.getUser(reqUserId, reqParamsId, (err, data) => {
+    userServices.getUser(req.user.id, req.params.id, (err, data) => {
       if (err) return next(err)
       if (req.baseUrl.match('/api/v./users')) return res.json({ status: 'success', data })
       req.analysisData = data.user
@@ -14,26 +12,28 @@ const userController = {
     })
   },
   putUser: (req, res, next) => {
-    const reqUserId = req.user.id
-    const reqParamsId = req.params.id
-    const reqBodyName = req.body.name
-    const reqFile = req.file
-    userServices.putUser(reqUserId, reqParamsId, reqBodyName, reqFile, (err, data) =>
-      err ? next(err) : res.json({ status: 'success', data }))
+    userServices.putUser(
+      req.user.id,
+      req.params.id,
+      req.body.name,
+      req.file,
+      (err, data) => {
+        if (err) return next(err)
+        delete data.user.password
+        res.json({ status: 'success', data })
+      })
   },
   getDashboard: (req, res, next) => {
-    const reqUserId = req.user.id
-    const reqParamsId = req.params.id
-    userServices.getUser(reqUserId, reqParamsId, (err, data) => {
+    userServices.getUser(req.user.id, req.params.id, (err, data) => {
       if (err) return next(err)
       return res.json({
         status: 'success',
         data: {
-          comments: Object.keys(data.user.Comments).length,
-          'commented objectives': Object.keys(data.user.CommentObjectives).length,
-          'favorited objectives': Object.keys(data.user.FavoriteObjectives).length,
+          favoritedObjectives: Object.keys(data.user.FavoriteObjectives).length,
           followers: Object.keys(data.user.Followers).length,
-          followings: Object.keys(data.user.Followings).length
+          followings: Object.keys(data.user.Followings).length,
+          comments: Object.keys(data.user.Comments).length,
+          commentedObjectives: Object.keys(data.user.CommentObjectives).length
         }
       })
     })

@@ -9,7 +9,6 @@ const matchQueryString = function (req, res, next) {
 }
 
 router.patch('/:id', userController.patchUser)
-router.get('/:id', userController.getUser)
 router.get('/', matchQueryString, userController.getAdminUsers)
 router.get('/', userController.getUsers)
 

@@ -6,6 +6,7 @@ const { imgurFileHandler } = requireWrapper('helpers/file.helper')
 const userServices = {
   getUsers: (callback) => {
     User.findAll({
+      attributes: { exclude: ['password'] },
       raw: true,
       nest: true
     })
@@ -14,12 +15,14 @@ const userServices = {
   },
   getUser: async (reqUserId, reqParamsId, callback) => {
     try {
+      const attributes = ['id', 'name', 'image']
       let user = await User.findByPk(reqParamsId, {
+        attributes: { exclude: ['password'] },
         include: [
-          { model: Comment, include: Objective },
-          { model: Objective, as: 'FavoriteObjectives' },
-          { model: User, as: 'Followers' },
-          { model: User, as: 'Followings' }]
+          { model: Objective, attributes, as: 'FavoriteObjectives', through: { attributes: [] } },
+          { model: User, attributes, as: 'Followers', through: { attributes: [] } },
+          { model: User, attributes, as: 'Followings', through: { attributes: [] } },
+          { model: Comment, attributes: ['id', 'text', 'objectiveId'], include: { model: Objective, attributes } }]
       })
       if (!user) throw new Error("User didn't exist!")
 
@@ -31,8 +34,10 @@ const userServices = {
         }
         return objectiveList
       }, [])
+      user.Comments.forEach(comment => {
+        delete comment.Objective
+      })
       if (user.id === reqUserId) user.isSignIn = true
-
       callback(null, { user })
     } catch (err) {
       callback(err)
@@ -71,7 +76,7 @@ const userServices = {
       }
 
       const updatedUser = await user.update({ isAdmin: !user.isAdmin })
-      callback(null, { user: updatedUser })
+      callback(null, { user: updatedUser.toJSON() })
     } catch (err) {
       callback(err)
     }

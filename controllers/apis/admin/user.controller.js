@@ -33,14 +33,12 @@ const userController = {
       })
     })
   },
-  getUser: (req, res, next) => {
-    const reqUserId = req.user.id
-    const reqParamsId = req.params.id
-    userServices.getUser(reqUserId, reqParamsId, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
-  },
   patchUser: (req, res, next) => {
-    const reqParamsId = req.params.id
-    userServices.patchUser(reqParamsId, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    userServices.patchUser(req.params.id, (err, data) => {
+      if (err) return next(err)
+      delete data.user.password
+      res.json({ status: 'success', data })
+    })
   }
 }
 
