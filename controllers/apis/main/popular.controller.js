@@ -4,7 +4,7 @@ const popularServices = requireWrapper('services/popular.services')
 
 const popularController = {
   getObjectives: (req, res, next) => {
-    popularServices.getObjectives(req.user.id, req.query.limit, (err, data) => {
+    popularServices.getObjectives(req.user, req.query.limit, (err, data) => {
       if (err) return next(err)
       return res.json({
         status: 'success',
@@ -16,7 +16,7 @@ const popularController = {
     })
   },
   getFollowings: (req, res, next) => {
-    popularServices.getFollowings(req.user.id, req.query.limit, (err, data) => {
+    popularServices.getFollowings(req.user, req.query.limit, (err, data) => {
       if (err) return next(err)
       return res.json({
         status: 'success',

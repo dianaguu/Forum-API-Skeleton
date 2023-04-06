@@ -13,7 +13,7 @@
       {{/if}}
     </a>
     <h2>{{this.name}}</h2>
-    <span class="bg-secondary badge">Followers：{{this.followerCount}}</span>
+    <span class="bg-secondary badge">Followers：{{this.followersCount}}</span>
     <p>
       {{#if this.isFollow }}
     <form action="/forum/follow/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
