@@ -1,3 +1,9 @@
+function deleteUserPassword (users) {
+  users.forEach(user => {
+    delete user.password
+  })
+}
+
 const analysisServices = {
   preprocess: async (reqAnalysisData, reqQueryKey, callback) => {
     try {
@@ -5,37 +11,44 @@ const analysisServices = {
       switch (reqQueryKey) {
         case 'comments':
           data = {
-            count: Object.keys(reqAnalysisData.Comments).length,
+            objectiveName: reqAnalysisData.name,
             comments: reqAnalysisData.Comments.map(comment => comment.text),
-            'comments detail': reqAnalysisData.Comments
+            count: Object.keys(reqAnalysisData.Comments).length,
+            commentDetail: reqAnalysisData.Comments
           }
           break
         case 'commented-objectives':
           data = {
+            userName: reqAnalysisData.name,
+            objectivesName: reqAnalysisData.CommentObjectives.map(objective => objective.name),
             count: Object.keys(reqAnalysisData.CommentObjectives).length,
-            'objectives name': reqAnalysisData.CommentObjectives.map(objective => objective.name),
-            'commented objectives detail': reqAnalysisData.CommentObjectives
+            commentedObjectivesDetail: reqAnalysisData.CommentObjectives
           }
           break
         case 'favorited-objectives':
           data = {
+            userName: reqAnalysisData.name,
+            objectivesName: reqAnalysisData.FavoriteObjectives.map(objective => objective.name),
             count: Object.keys(reqAnalysisData.FavoriteObjectives).length,
-            'objectives name': reqAnalysisData.FavoriteObjectives.map(objective => objective.name),
-            'favorited objectives detail': reqAnalysisData.FavoriteObjectives
+            favoritedObjectivesDetail: reqAnalysisData.FavoriteObjectives
           }
           break
         case 'followers':
+          deleteUserPassword(reqAnalysisData.Followers)
           data = {
+            userName: reqAnalysisData.name,
+            followersName: reqAnalysisData.Followers.map(follower => follower.name),
             count: Object.keys(reqAnalysisData.Followers).length,
-            'followers name': reqAnalysisData.Followers.map(follower => follower.name),
-            'followers detail': reqAnalysisData.Followers
+            followersDetail: reqAnalysisData.Followers
           }
           break
         case 'followings':
+          deleteUserPassword(reqAnalysisData.Followings)
           data = {
+            userName: reqAnalysisData.name,
+            followingsName: reqAnalysisData.Followings.map(following => following.name),
             count: Object.keys(reqAnalysisData.Followings).length,
-            'followings name': reqAnalysisData.Followings.map(following => following.name),
-            'followings detail': reqAnalysisData.Followings
+            followingsDetail: reqAnalysisData.Followings
           }
           break
       }

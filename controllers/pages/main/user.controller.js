@@ -5,7 +5,8 @@ const userServices = requireWrapper('services/user.services')
 
 const userController = {
   getUser: (req, res, next) => {
-    userServices.getUser(req.user.id, req.params.id, (err, data) => err ? next(err) : res.render('users/profile', data))
+    const attributes = ['id', 'name', 'image']
+    userServices.getUser(req.user.id, req.params.id, attributes, (err, data) => err ? next(err) : res.render('users/profile', data))
   },
   putUser: (req, res, next) => {
     userServices.putUser(

@@ -13,16 +13,15 @@ const userServices = {
       .then(users => callback(null, { users }))
       .catch(err => callback(err))
   },
-  getUser: async (reqUserId, reqParamsId, callback) => {
+  getUser: async (reqUserId, reqParamsId, attributes, callback) => {
     try {
-      const attributes = ['id', 'name', 'image']
       let user = await User.findByPk(reqParamsId, {
         attributes: { exclude: ['password'] },
         include: [
           { model: Objective, attributes, as: 'FavoriteObjectives', through: { attributes: [] } },
           { model: User, attributes, as: 'Followers', through: { attributes: [] } },
           { model: User, attributes, as: 'Followings', through: { attributes: [] } },
-          { model: Comment, attributes: ['id', 'text', 'objectiveId'], include: { model: Objective, attributes } }]
+          { model: Comment, attributes: { exclude: ['userId'] }, include: { model: Objective, attributes } }]
       })
       if (!user) throw new Error("User didn't exist!")
 
@@ -34,9 +33,6 @@ const userServices = {
         }
         return objectiveList
       }, [])
-      user.Comments.forEach(comment => {
-        delete comment.Objective
-      })
       if (user.id === reqUserId) user.isSignIn = true
       callback(null, { user })
     } catch (err) {

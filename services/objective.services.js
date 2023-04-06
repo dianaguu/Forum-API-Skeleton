@@ -119,7 +119,7 @@ const ObjectiveServices = {
       const objective = await Objective.findByPk(reqParamsId, {
         include: [
           { model: Category, attributes },
-          { model: Comment, attributes: { exclude: ['objectiveId', 'userId'] }, include: { model: User, attributes } }]
+          { model: Comment, attributes: { exclude: ['objectiveId'] }, include: { model: User, attributes } }]
       })
       if (!objective) throw new Error("Objective didn't exist!")
 

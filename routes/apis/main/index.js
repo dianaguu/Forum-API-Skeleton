@@ -18,8 +18,6 @@ router.use('/feed', requestAuthenticated, require('./feed.route'))
 router.use('/users', requestAuthenticated, require('./user.route'))
 router.use('/account', require('./account.route'))
 
-router.use('/analysis', requestAuthenticated, require('./analysis.route'))
-
 router.use('/', requestAuthenticated, (req, res) =>
   res.status(400).json({ status: 'error', message: `${req.originalUrl} not found, or wrong http method` })
 )

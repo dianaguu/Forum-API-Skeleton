@@ -4,9 +4,18 @@ const userServices = requireWrapper('services/user.services')
 
 const userController = {
   getUser: (req, res, next) => {
-    userServices.getUser(req.user.id, req.params.id, (err, data) => {
+    let attributes = ['id', 'name', 'image']
+    if (req.baseUrl.match('/api/v./admin/analysis')) {
+      attributes = {}
+    }
+    userServices.getUser(req.user.id, req.params.id, attributes, (err, data) => {
       if (err) return next(err)
-      if (req.baseUrl.match('/api/v./users')) return res.json({ status: 'success', data })
+      if (req.baseUrl.match('/api/v./users')) {
+        data.user.Comments.forEach(comment => {
+          delete comment.Objective
+        })
+        return res.json({ status: 'success', data })
+      }
       req.analysisData = data.user
       next()
     })
@@ -24,7 +33,8 @@ const userController = {
       })
   },
   getDashboard: (req, res, next) => {
-    userServices.getUser(req.user.id, req.params.id, (err, data) => {
+    const attributes = ['id', 'name']
+    userServices.getUser(req.user.id, req.params.id, attributes, (err, data) => {
       if (err) return next(err)
       return res.json({
         status: 'success',
