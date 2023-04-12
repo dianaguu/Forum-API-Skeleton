@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 /* eslint-disable */
-const analysisController = requireWrapper('controllers/apis/main/analysis.controller')
+const analysisController = requireWrapper('controllers/apis/admin/analysis.controller')
 const userController = requireWrapper('controllers/apis/main/user.controller')
 const objectiveController = requireWrapper('controllers/apis/main/objective.controller')
 /* eslint-enable */
