@@ -11,7 +11,7 @@ const analysisServices = {
       switch (reqQueryKey) {
         case 'comments':
           data = {
-            objectiveName: reqAnalysisData.name,
+            name: reqAnalysisData.name,
             comments: reqAnalysisData.Comments.map(comment => comment.text),
             count: Object.keys(reqAnalysisData.Comments).length,
             commentDetail: reqAnalysisData.Comments
