@@ -1,12 +1,16 @@
 {
-  "name": "forum",
+  "name": "forum-api-skeleton",
   "version": "1.0.0",
+  "description": "establish a forum with infrastructure rapidly to achieve your desired objective.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
     "lnit": "eslint \"**/*.js\" --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "18.x"
   },
   "author": "Diana Guu",
   "license": "ISC",
