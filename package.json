@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "database": "npm run db:create && npm run db:migrate && npm run db:seed",
-    "db:create": "node helpers/mysql.helper.js",
+    "db:create": "node helpers/database.helper.js",
     "db:migrate": "sequelize --options-path ./.sequelizerc db:migrate",
     "db:seed": "sequelize --options-path ./.sequelizerc db:seed:all",
     "lnit": "eslint \"**/*.js\" --fix",
