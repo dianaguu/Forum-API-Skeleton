@@ -13,7 +13,7 @@ module.exports = {
       Array.from({ length: 50 }, () => ({
         name: faker.company.name(),
         telephone: faker.phone.number(),
-        address: faker.address.streetAddress(true),
+        address: faker.location.streetAddress(true),
         opening_hours: '10:10',
         image: `https://loremflickr.com/320/240/storefront/?random=${Math.random() * 100}`,
         description: faker.lorem.text(),

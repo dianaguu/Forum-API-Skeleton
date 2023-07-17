@@ -19,6 +19,7 @@
   "author": "Diana Guu",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
@@ -40,7 +41,6 @@
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
     "eslint": "^8.34.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
