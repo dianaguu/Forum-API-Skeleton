@@ -11,6 +11,7 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const MemoryStore = require('memorystore')(session)
 const passport = require('./configs/passport')
 const flash = require('connect-flash')
 const methodOverride = require('method-override')
@@ -37,6 +38,10 @@ app.use(cookieParser())
 // ===========================================================
 // session and passport
 app.use(session({
+  cookie: { maxAge: 86400000 },
+  store: new MemoryStore({
+    checkPeriod: 86400000
+  }),
   secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true
