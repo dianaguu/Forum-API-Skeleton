@@ -9,7 +9,7 @@ const development = {
   dialect: 'mysql'
 }
 const production = {
-  use_env_variable: 'DATABASE_URL'
+  use_env_variable: 'CLEARDB_DATABASE_URL'
 }
 
 // database connection
@@ -23,7 +23,7 @@ const connectDatabase = (databaseName) => {
     })
     database = development.database
   } else {
-    sequelize = new Sequelize(production.use_env_variable)
+    sequelize = new Sequelize(process.env[production.use_env_variable])
     database = production.use_env_variable.split('/').pop().split('?')[0]
   }
   return { sequelize, database }

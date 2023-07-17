@@ -1,4 +1,5 @@
 'use strict'
+require('dotenv').config()
 
 const bcrypt = require('bcryptjs')
 
@@ -29,8 +30,8 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     // first three users (total 13 users)
     await queryInterface.bulkInsert('Users', [{
-      email: 'root@example.com',
-      password: await bcrypt.hash('12345678', 10),
+      email: process.env.ROOT_EMAIL,
+      password: await bcrypt.hash(process.env.ROOT_PASSWORD, 10),
       is_admin: true,
       name: 'root',
       image: `https://loremflickr.com/300/300/headshot/?random=${Math.random() * 100}`,
